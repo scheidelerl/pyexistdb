@@ -69,7 +69,8 @@ def exist_matches(value, autoescape=None):
     elif hasattr(value, 'node'):
         parts = node_parts(value.node, escape, include_tail=False)
     else:
-        parts = [ escape(unicode(value)) ]
+        parts = [ escape(str(value, 'utf-8')) ]
+
 
     result = ''.join(parts)
     return mark_safe(result)

@@ -2,7 +2,7 @@
 Manage and apply patches necessary to work around issues in
 third-party libraries.
 """
-import xmlrpclib
+import xmlrpc.client
 import collections
 from decimal import Decimal
 
@@ -56,13 +56,13 @@ class XMLRpcLibPatch(Patch):
             return cls._warranted
 
         good = True
-        parser, unmarshaller = xmlrpclib.getparser()
+        parser, unmarshaller = xmlrpc.client.getparser()
         try:
             # This will fail if the unmarshaller is unable to handle ex:nil.
             # We do not test for every value that we patch for. We assume if
             # ex:nil won't work, no other extended value will.
             parser.feed("<params><param><value><ex:nil/></value></param></params>")
-        except xmlrpclib.ResponseError:
+        except xmlrpc.client.ResponseError:
             good = False
 
         # Trying to close if there was an error earlier won't work.

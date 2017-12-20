@@ -16,7 +16,7 @@
 
 import socket
 import unittest
-import xmlrpclib
+import xmlrpc.client
 
 from eulexistdb.exceptions import ExistDBException
 
@@ -36,15 +36,15 @@ class ExistDbExceptionTest(unittest.TestCase):
 
         # xmlrpc error
         # - args are url, error code, error message, headers
-        rpc_err = xmlrpclib.ProtocolError('http://so.me/url', 101,
+        rpc_err = xmlrpc.client.ProtocolError('http://so.me/url', 101,
                                           'rpc error message', {})
         err = ExistDBException(rpc_err)
         # message should contain various bits of info from exception
         msg = err.message()
-        self.assert_('XMLRPC Error' in msg)
-        self.assert_(rpc_err.url in msg)
-        self.assert_(str(rpc_err.errcode) in msg)
-        self.assert_(rpc_err.errmsg in msg)
+        self.assertTrue('XMLRPC Error' in msg)
+        self.assertTrue(rpc_err.url in msg)
+        self.assertTrue(str(rpc_err.errcode) in msg)
+        self.assertTrue(rpc_err.errmsg in msg)
 
         # no test for exist-speficic errors (need an exaample error)
 

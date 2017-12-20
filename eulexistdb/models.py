@@ -78,7 +78,7 @@ class XmlModelType(XmlObjectType):
         return new_class
 
 
-class XmlModel(XmlObject):
+class XmlModel(XmlObject,metaclass=XmlModelType):
 
     """
     An :class:`~eulxml.xmlmap.XmlObject` in an
@@ -92,4 +92,4 @@ class XmlModel(XmlObject):
     stored models.
     """
 
-    __metaclass__ = XmlModelType
+

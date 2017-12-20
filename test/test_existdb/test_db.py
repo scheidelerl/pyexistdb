@@ -17,8 +17,8 @@
 
 from contextlib import contextmanager
 import unittest
-import xmlrpclib
-from urlparse import urlsplit, urlunsplit
+import xmlrpc.client
+from urllib.parse import urlsplit, urlunsplit
 from mock import patch
 
 try:
@@ -41,14 +41,14 @@ except ImportError:
         global settings
         # patch settings
         old_vals = {}
-        for key, val in kwargs.iteritems():
+        for key, val in list(kwargs.items()):
             old_vals[key] = getattr(settings, key, None)
             setattr(settings, key, val)
 
         yield
 
         # restore values
-        for key, val in old_vals.iteritems():
+        for key, val in list(old_vals.items()):
             setattr(settings, key, val)
 
 
@@ -73,20 +73,20 @@ class ExistDBTest(unittest.TestCase):
             password=EXISTDB_SERVER_ADMIN_PASSWORD)
         self.db.createCollection(self.COLLECTION, True)
 
-        self.db.load('<hello>World</hello>', self.COLLECTION + '/hello.xml')
+        self.db.load("<hello>World</hello>", self.COLLECTION + "/hello.xml")
 
         xml = '<root><element name="one">One</element><element name="two">Two</element><element name="two">Three</element></root>'
-        self.db.load(xml, self.COLLECTION + '/xqry_test.xml')
+        self.db.load(xml.encode("utf-8"), self.COLLECTION + '/xqry_test.xml')
 
         xml = '<root><field name="one">One</field><field name="two">Two</field><field name="three">Three</field><field name="four">Four</field><unicode> ϔ ϕ ϖ Ϛ Ϝ Ϟ Ϡ Ϣ ڡ ڢ ڣ ڤ ༀ </unicode></root>'
-        self.db.load(xml, self.COLLECTION + '/xqry_test2.xml')
+        self.db.load(xml.encode("utf-8"), self.COLLECTION + '/xqry_test2.xml')
 
         self.test_groups = []
         self.test_users = []
 
         xml = '<root xml:id="A"/>'
-        self.db.load(xml, self.COLLECTION + '/xqry_test3.xml')
-        self.db.load(xml, self.COLLECTION + '/xqry_test4.xml')
+        self.db.load(xml.encode("utf-8"), self.COLLECTION + '/xqry_test3.xml')
+        self.db.load(xml.encode("utf-8"), self.COLLECTION + '/xqry_test4.xml')
 
     def tearDown(self):
         self.db.removeCollection(self.COLLECTION)
@@ -175,14 +175,14 @@ class ExistDBTest(unittest.TestCase):
     def test_getDocument(self):
         """Test retrieving a full document from eXist"""
         xml = self.db.getDocument(self.COLLECTION + "/hello.xml")
-        self.assertEquals(xml, "<hello>World</hello>")
+        self.assertEqual(xml.decode("utf-8"), "<hello>World</hello>")
 
         self.assertRaises(Exception, self.db.getDocument, self.COLLECTION + "/notarealdoc.xml")
 
     def test_getDoc(self):
         """Test retrieving a full document from eXist (legacy function name for getDocument)"""
         xml = self.db.getDoc(self.COLLECTION + "/hello.xml")
-        self.assertEquals(xml, "<hello>World</hello>")
+        self.assertEqual(xml.decode("utf-8"), '<hello>World</hello>')
 
 
     def test_hasDocument(self):
@@ -202,12 +202,12 @@ class ExistDBTest(unittest.TestCase):
         self.assertEqual(self.COLLECTION + "/hello.xml", desc['name'])
         self.assertEqual("application/xml", desc['mime-type'])
         self.assertEqual("XMLResource", desc['type'])
-        self.assert_('owner' in desc)
-        self.assert_('group' in desc)
-        self.assert_('content-length' in desc)
-        self.assert_('created' in desc)
-        self.assert_('modified' in desc)
-        self.assert_('permissions' in desc)
+        self.assertTrue('owner' in desc)
+        self.assertTrue('group' in desc)
+        self.assertTrue('content-length' in desc)
+        self.assertTrue('created' in desc)
+        self.assertTrue('modified' in desc)
+        self.assertTrue('permissions' in desc)
 
         self.assertEqual({}, self.db.describeDocument("/nonexistent.xml"))
 
@@ -298,18 +298,18 @@ class ExistDBTest(unittest.TestCase):
         """Test xquery results with hits & count"""
         xqry = 'for $x in collection("/db%s")//root/element where $x/@name="two" return $x' % (self.COLLECTION, )
         qres = self.db.query(xqry)
-        self.assertEquals(qres.hits, 2)
-        self.assertEquals(qres.start, 1)
-        self.assertEquals(qres.count, 2)
+        self.assertEqual(qres.hits, 2)
+        self.assertEqual(qres.start, 1)
+        self.assertEqual(qres.count, 2)
 
-        self.assertEquals(qres.results[0].xpath('string()'), 'Two')
-        self.assertEquals(qres.results[1].xpath('string()'), 'Three')
+        self.assertEqual(qres.results[0].xpath('string()'), 'Two')
+        self.assertEqual(qres.results[1].xpath('string()'), 'Three')
 
         # retrieve unicode content unchanged
         xqry = 'collection("/db%s")//root[unicode]' % (self.COLLECTION, )
         qres = self.db.query(xqry)
-        unicode_str = u' ϔ ϕ ϖ Ϛ Ϝ Ϟ Ϡ Ϣ ڡ ڢ ڣ ڤ ༀ '
-        self.assertEquals(qres.results[0].xpath('unicode/text()')[0],
+        unicode_str =u' ϔ ϕ ϖ Ϛ Ϝ Ϟ Ϡ Ϣ ڡ ڢ ڣ ڤ ༀ '
+        self.assertEqual(qres.results[0].xpath('unicode/text()')[0],
             unicode_str)
         # query on unicode does not currently return results
         # xqry = u'collection("/db%s")//root[contains(unicode, "%s")]' % (self.COLLECTION, unicode_str)
@@ -325,7 +325,7 @@ class ExistDBTest(unittest.TestCase):
         xqry = 'for $x in collection("/db%s")//root[@xml:id] return $x' % (
             self.COLLECTION, )
         qres = self.db.query(xqry)
-        self.assertEquals(qres.hits, 2)
+        self.assertEqual(qres.hits, 2)
 
     def test_query_bad_xqry(self):
         """Check that an invalid xquery raises an exception"""
@@ -343,8 +343,8 @@ class ExistDBTest(unittest.TestCase):
         self.assertTrue(qres.count is not None)
 
         self.assertFalse(qres.hits, 0)
-        self.assertEquals(qres.count, 0)
-        self.assertEquals(qres.start, 1)
+        self.assertEqual(qres.count, 0)
+        self.assertEqual(qres.start, 1)
         # NOTE: this is a change from exist 1.4.x, was unset/None previously
 
         self.assertFalse(qres.results)
@@ -353,27 +353,27 @@ class ExistDBTest(unittest.TestCase):
         """Test executeQuery & dependent functions (querySummary, getHits, retrieve)"""
         xqry = 'for $x in collection("/db%s")/root/element where $x/@name="two" return $x' % (self.COLLECTION, )
         result_id = self.db.executeQuery(xqry)
-        self.assert_(isinstance(result_id, int), "executeQuery returns integer result id")
+        self.assertTrue(isinstance(result_id, int), "executeQuery returns integer result id")
 
         # run querySummary on result from executeQuery
         summary = self.db.querySummary(result_id)
         self.assertEqual(2, summary['hits'], "querySummary returns correct hit count of 2")
-        self.assert_(isinstance(summary['queryTime'], int), "querySummary return includes int queryTime")
+        self.assertTrue(isinstance(summary['queryTime'], int), "querySummary return includes int queryTime")
         # any reasonable way to check what is in the documents summary info?
         # documents should be an array of arrays - document name, id, and # hits
 
         # getHits on result
         hits = self.db.getHits(result_id)
-        self.assert_(isinstance(hits, int), "getHits returns integer hit count")
+        self.assertTrue(isinstance(hits, int), "getHits returns integer hit count")
         self.assertEqual(2, hits, "getHits returns correct count of 2")
 
         # retrieve first result
         result = self.db.retrieve(result_id, 0)
-        self.assertEqual('<element name="two">Two</element>', result,
+        self.assertEqual('<element name="two">Two</element>'.encode("UTF-8"), result,
                 "retrieve index 0 returns first element with @name='two'")
         # retrieve second result
         result = self.db.retrieve(result_id, 1)
-        self.assertEqual('<element name="two">Three</element>', result,
+        self.assertEqual('<element name="two">Three</element>'.encode("UTF-8"), result,
                 "retrieve index 0 returns first element with @name='two'")
 
     def test_executeQuery_noresults(self):
@@ -414,13 +414,13 @@ class ExistDBTest(unittest.TestCase):
 </root>'''
         # load should return True on success
         self.assertTrue(self.db.load(xml, dbpath))
-        self.assertEqual(xml, self.db.getDocument(dbpath))
+        self.assertEqual(xml.encode(encoding='UTF-8'), (self.db.getDocument(dbpath)))
         # update
         xml = '''<root>
     <element>value</element>
 </root>'''
         self.assertTrue(self.db.load(xml, dbpath))
-        self.assertEqual(xml, self.db.getDocument(dbpath))
+        self.assertEqual(xml.encode(encoding='UTF-8'), self.db.getDocument(dbpath))
 
     def test_load_invalid_xml(self):
         """Check that loading invaliid xml raises an exception"""
@@ -452,9 +452,9 @@ class ExistDBTest(unittest.TestCase):
     def test_loadCollectionIndex(self):
         """Test loading a collection index config file to the system config collection."""
         self.db.loadCollectionIndex(self.COLLECTION, "<collection/>")
-        self.assert_(self.db.hasCollection(self.db._configCollectionName(self.COLLECTION)))
+        self.assertTrue(self.db.hasCollection(self.db._configCollectionName(self.COLLECTION)))
         xml = self.db.getDocument(self.db._collectionIndexPath(self.COLLECTION))
-        self.assertEquals(xml, "<collection/>")
+        self.assertEqual(xml, "<collection/>".encode(encoding='UTF-8'))
 
         # NOTE: rest api assumes overwrite, so this behavior is different now
         # reload with overwrite disabled - should cause an exception
@@ -492,11 +492,10 @@ class ExistDBTest(unittest.TestCase):
             self.db.removeCollection(self.db._configCollectionName(self.COLLECTION))
         self.assertFalse(self.db.hasCollectionIndex(self.COLLECTION),
             "hasCollectionIndex failed to return false for collection with no config collection")
-
         # load test config collection
         self.db.loadCollectionIndex(self.COLLECTION, "<collection/>")
         self.assertTrue(self.db.hasCollectionIndex(self.COLLECTION),
-            "hasCollectionIndex failed to return True for collection with config file loaded")
+            "hasCollectionIndex failed to return True for collection with config file loaded collection name:%s "%(self.COLLECTION))
 
         # remove config file but leave config collection
         self.db.removeDocument(self.db._collectionIndexPath(self.COLLECTION))
@@ -518,7 +517,7 @@ class ExistDBTest(unittest.TestCase):
 
     def test_getPermissions(self):
         perms = self.db.getPermissions('/db' + self.COLLECTION + '/hello.xml')
-        self.assert_(isinstance(perms, db.ExistPermissions))
+        self.assertTrue(isinstance(perms, db.ExistPermissions))
         self.assertEqual(EXISTDB_SERVER_USER, perms.owner)
         self.assertEqual(EXISTDB_SERVER_USER, perms.group)
         # self.assertEqual(493, perms.permissions)    # FIXME: will this always be true?
@@ -632,7 +631,7 @@ class ExistDBTest(unittest.TestCase):
         """
         self.assertTrue(self.db_admin.create_group('foo'))
         # The group is actually removed but the response cannot be parsed.
-        self.assertRaises(xmlrpclib.ResponseError,
+        self.assertRaises(xmlrpc.client.ResponseError,
                           self.db_admin.server.removeGroup, 'foo')
 
     def test_xmlrpclib_failure_without_patch(self):

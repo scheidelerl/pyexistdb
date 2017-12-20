@@ -60,13 +60,13 @@ Available subcommands:
 
     def handle(self, *args, **options):
         if not len(args) or args[0] == 'help':
-            print self.help
+            print (self.help)
             return
 
         cmd = args[0]
         if cmd not in self.arg_list:
-            print "Command '%s' not recognized" % cmd
-            print self.help
+            print("Command {} not recognized".format(cmd))
+            print (self.help)
             return
 
         # check for required settings (used in all modes)
@@ -109,38 +109,38 @@ Available subcommands:
                 # load collection index to eXist
 
                 # no easy way to check if index is different, but give some info to user to help indicate
-                if hasindex:
+                if hasindex == True:
                     index_desc = self.db.describeDocument(self.db._collectionIndexPath(collection))
-                    print "Collection already has an index configuration; last modified %s\n" % index_desc['modified']
+                    print ("Collection already has an index configuration; last modified {}\n".format(index_desc['modified']) )
                 else:
-                    print "This appears to be a new index configuration\n"
+                    print ("This appears to be a new index configuration\n")
 
                 message = "eXist index configuration \n collection:\t%s\n index file:\t%s" % (collection, index)
 
                 success = self.db.loadCollectionIndex(collection, open(index))
                 if success:
-                    print "Succesfully updated %s" % message
-                    print """
+                    print ("Succesfully updated {}".format(message) )
+                    print ("""
 If your collection already contains data and the index configuration
 is new or has changed, you should reindex the collection.
-            """
+            """)
                 else:
                     raise CommandError("Failed to update %s" % message)
 
             elif cmd == 'show-index':
                 # show the contents of the the collection index config file in exist
-                print self.db.getDoc(self.db._collectionIndexPath(collection))
+                print (self.db.getDoc(self.db._collectionIndexPath(collection)))
 
             elif cmd == 'index-info':
                 # show information about the collection index config file in exist
                 index_desc = self.db.describeDocument(self.db._collectionIndexPath(collection))
                 for field, val in index_desc.items():
-                    print "%s:\t%s" % (field, val)
+                    print ("{}:\t{}".format(field, val))
 
             elif cmd == 'remove-index':
                 # remove any collection index in eXist
                 if self.db.removeCollectionIndex(collection):
-                    print "Removed collection index configuration for %s" % collection
+                    print ("Removed collection index configuration for {}".format(collection) )
                 else:
                     raise CommandError("Failed to remove collection index configuration for %s" % collection)
 
@@ -150,17 +150,17 @@ is new or has changed, you should reindex the collection.
                 if not self.db.hasCollection(collection):
                     raise CommandError("Collection %s does not exist" % collection)
 
-                print "Reindexing collection %s" % collection
-                print "-- If you have a large collection, this may take a while."
+                print ("Reindexing collection {}".format(collection) )
+                print ("-- If you have a large collection, this may take a while.")
                 start_time = time.time()
                 success = self.db.reindexCollection(collection)
                 end_time = time.time()
                 if success:
-                    print "Successfully reindexed collection %s" % collection
-                    print "Reindexing took %.2f seconds" % (end_time - start_time)
+                    print ("Successfully reindexed collection {}".format(collection))
+                    print ("Reindexing took {} seconds".format((end_time - start_time))  )
                 else:
-                    print "Failed to reindexed collection %s" % collection
-                    print "-- Check that the configured exist user is in the exist DBA group or specify different credentials."
+                    print ("Failed to reindexed collection {}".format(collection))
+                    print ("-- Check that the configured exist user is in the exist DBA group or specify different credentials.")
 
 
         except Exception as err:

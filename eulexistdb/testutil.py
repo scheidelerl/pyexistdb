@@ -86,7 +86,7 @@ class TestCase(DjangoTestCase):
          """
         if msg_prefix != '':
             msg_prefix += '.  '
-        self.assert_(re.search(re.compile(regex, re.DOTALL), text),
+        self.assertTrue(re.search(re.compile(regex, re.DOTALL), text),
         msg_prefix + "Should match '%s'" % regex)
 
     def _fixture_setup(self):
@@ -162,8 +162,7 @@ class ExistDBTestWrapper(object):
         else:
             settings.EXISTDB_ROOT_COLLECTION = getattr(settings, "EXISTDB_ROOT_COLLECTION", "/default") + "_test"
 
-        print >> sys.stderr, "Creating eXist Test Collection: %s" % \
-            settings.EXISTDB_ROOT_COLLECTION
+        print("Creating eXist Test Collection: %s" % settings.EXISTDB_ROOT_COLLECTION, file=sys.stderr)
         # now that existdb root collection has been set to test collection, init db connection
         db = ExistDB()
         # create test collection (don't complain if collection already exists)
@@ -174,13 +173,13 @@ class ExistDBTestWrapper(object):
         delattr(settings, "EXISTDB_ROOT_COLLECTION_REAL")
 
         if self.stored_default_collection is not None:
-            print >> sys.stderr, "Removing eXist Test Collection: %s" % settings.EXISTDB_ROOT_COLLECTION
+            print("Removing eXist Test Collection: %s" % settings.EXISTDB_ROOT_COLLECTION, file=sys.stderr)
             # before restoring existdb non-test root collection, init db connection
             db = ExistDB()
             try:
                 # remove test collection
                 db.removeCollection(settings.EXISTDB_ROOT_COLLECTION)
-            except ExistDBException, e:
+            except ExistDBException as e:
                 print >> sys.stderr, "Error removing collection %s: %s" \
                     % (settings.EXISTDB_ROOT_COLLECTION, e)
 

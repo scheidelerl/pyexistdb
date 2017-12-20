@@ -15,8 +15,8 @@
 #   limitations under the License.
 
 import socket
-import xmlrpclib
-from urllib import unquote_plus
+import xmlrpc.client
+from urllib.parse import unquote_plus
 
 class ExistDBException(Exception):
     """A handy wrapper for all errors returned by the eXist server."""
@@ -36,7 +36,7 @@ class ExistDBException(Exception):
         elif isinstance(orig_except, socket.error):
             # socket error is a tuple of errno, error string
             message = 'I/O Error: %s' % orig_except[1]
-        elif isinstance(orig_except, xmlrpclib.ProtocolError):
+        elif isinstance(orig_except, xmlrpc.client.ProtocolError):
             message = 'XMLRPC Error at %(url)s: %(code)s %(msg)s' % {
                     'url': orig_except.url,
                     'code': orig_except.errcode,

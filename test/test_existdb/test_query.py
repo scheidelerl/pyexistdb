@@ -137,8 +137,8 @@ class ExistQueryTest(unittest.TestCase):
 
     def test_getslice(self):
         slice = self.qs.order_by('id')[0:2]
-        self.assert_(isinstance(slice, QuerySet))
-        self.assert_(isinstance(slice[0], QueryTestModel))
+        self.assertTrue(isinstance(slice, QuerySet))
+        self.assertTrue(isinstance(slice[0], QueryTestModel))
         self.assertEqual(2, slice.count())
         self.assertEqual(2, len(slice))
 
@@ -266,8 +266,8 @@ class ExistQueryTest(unittest.TestCase):
             2, fqs.count(),
             "should get 2 matches for OR filter on id='abc' or name='four' (got %s)" % fqs.count())
         ids = [obj.id for obj in fqs.all()]
-        self.assert_('abc' in ids, 'id "abc" in list of ids when OR filter includes id="abc"')
-        self.assert_('def' in ids, 'id "def" in list of ids when OR filter includes name="four')
+        self.assertTrue('abc' in ids, 'id "abc" in list of ids when OR filter includes id="abc"')
+        self.assertTrue('def' in ids, 'id "def" in list of ids when OR filter includes name="four')
 
     def test_exclude(self):
         fqs = self.qs.exclude(id='abc', name='one').only('id')
@@ -275,7 +275,7 @@ class ExistQueryTest(unittest.TestCase):
             2, fqs.count(),
             "should get 2 matches for exclude filter on id='abc' or name='one' (got %s)" % fqs.count())
         ids = [obj.id for obj in fqs.all()]
-        self.assert_('abc' not in ids, 'id "abc" should not be in list of ids when exclude id="abc"')
+        self.assertTrue('abc' not in ids, 'id "abc" should not be in list of ids when exclude id="abc"')
 
     def test_filter_gtelte(self):
         # < <= > >=
@@ -306,7 +306,7 @@ class ExistQueryTest(unittest.TestCase):
 
     def test_get(self):
         result = self.qs.get(contains="two")
-        self.assert_(isinstance(result, QueryTestModel), "get() with contains returns single result")
+        self.assertTrue(isinstance(result, QueryTestModel), "get() with contains returns single result")
         self.assertEqual(result.name, "two", "result returned by get() has correct data")
         self.assertEqual(NUM_FIXTURES, self.qs.count(), "main queryset remains unchanged by filter")
 
@@ -318,13 +318,13 @@ class ExistQueryTest(unittest.TestCase):
 
     def test_get_byname(self):
         result = self.qs.get(name="one")
-        self.assert_(isinstance(result, QueryTestModel), "get() with contains returns single result")
+        self.assertTrue(isinstance(result, QueryTestModel), "get() with contains returns single result")
         self.assertEqual(result.name, "one", "result returned by get() has correct data")
         self.assertEqual(NUM_FIXTURES, self.qs.count(), "main queryset remains unchanged by filter")
 
     def test_filter_get(self):
         result = self.qs.filter(contains="one").filter(name="two").get()
-        self.assert_(isinstance(result, QueryTestModel))
+        self.assertTrue(isinstance(result, QueryTestModel))
         self.assertEqual("two", result.name, "filtered get() returns correct data")
         self.assertEqual(NUM_FIXTURES, self.qs.count(), "main queryset remains unchanged by filter")
 
@@ -340,7 +340,7 @@ class ExistQueryTest(unittest.TestCase):
         self.assertEqual('one', fqs[1].name)
         self.assertEqual('three', fqs[2].name)
         self.assertEqual('two', fqs[3].name)
-        self.assert_('order by ' not in self.qs.query.getQuery(), "main queryset unchanged by order_by()")
+        self.assertTrue('order by ' not in self.qs.query.getQuery(), "main queryset unchanged by order_by()")
         # attribute
         fqs = self.qs.order_by('id')
         self.assertEqual('abc', fqs[0].id)
@@ -356,33 +356,33 @@ class ExistQueryTest(unittest.TestCase):
         self.assertEqual('xyz', fqs[0].id)
         # case-insensitive sorting - upper-case description should not sort first
         fqs = self.qs.order_by('~description')
-        self.assert_(fqs[0].description.startswith('third'))
-        self.assert_(fqs[1].description.startswith('This one contains'))
+        self.assertTrue(fqs[0].description.startswith('third'))
+        self.assertTrue(fqs[1].description.startswith('This one contains'))
         # reverse case-insensitive sorting - flags in either order
         fqs = self.qs.order_by('~-description')
-        self.assert_(fqs[3].description.startswith('third'))
+        self.assertTrue(fqs[3].description.startswith('third'))
         fqs = self.qs.order_by('-~description')
-        self.assert_(fqs[3].description.startswith('third'))
+        self.assertTrue(fqs[3].description.startswith('third'))
 
     def test_order_by_raw(self):
         fqs = self.qs.order_by_raw('min(%(xq_var)s/year)')
-        self.assert_('1990' in fqs[0].years)
-        self.assert_('2001' in fqs[1].years)
-        self.assert_('2010' in fqs[2].years)
+        self.assertTrue('1990' in fqs[0].years)
+        self.assertTrue('2001' in fqs[1].years)
+        self.assertTrue('2010' in fqs[2].years)
         self.assertEqual([], fqs[3].years)
 
         fqs = self.qs.order_by_raw('min(%(xq_var)s/year)', ascending=False)
         self.assertEqual([], fqs[0].years)
-        self.assert_('2010' in fqs[1].years)
-        self.assert_('2001' in fqs[2].years)
-        self.assert_('1990' in fqs[3].years)
+        self.assertTrue('2010' in fqs[1].years)
+        self.assertTrue('2001' in fqs[2].years)
+        self.assertTrue('1990' in fqs[3].years)
 
     def test_only(self):
         self.qs.only('name')
-        self.assert_('element name {' not in self.qs.query.getQuery(), "main queryset unchanged by only()")
+        self.assertTrue('element name {' not in self.qs.query.getQuery(), "main queryset unchanged by only()")
 
         fqs = self.qs.filter(id='one').only('name', 'id', 'sub', 'or_field')
-        self.assert_(isinstance(fqs[0], QueryTestModel))  # actually a Partial type derived from this
+        self.assertTrue(isinstance(fqs[0], QueryTestModel))  # actually a Partial type derived from this
         # attributes that should be present
         self.assertNotEqual(fqs[0].id, None)
         self.assertNotEqual(fqs[0].sub, None)
@@ -409,7 +409,7 @@ class ExistQueryTest(unittest.TestCase):
 
         # sub-subclass
         fqs = self.qs.filter(id='one').only('sub__ssc')
-        self.assert_(isinstance(fqs[0], QueryTestModel))
+        self.assertTrue(isinstance(fqs[0], QueryTestModel))
 
     def test_only_hash(self):
         fqs = self.qs.only('hash')
@@ -440,11 +440,11 @@ class ExistQueryTest(unittest.TestCase):
         fqs = self.qs.only('last_modified')
         # no filters, should return all 3 test objects
         for result in fqs:
-            self.assert_(isinstance(result.last_modified, datetime))
+            self.assertTrue(isinstance(result.last_modified, datetime))
 
     def test_iter(self):
         for q in self.qs:
-            self.assert_(isinstance(q, QueryTestModel))
+            self.assertTrue(isinstance(q, QueryTestModel))
 
     def test_slice_iter(self):
         i = 0
@@ -527,18 +527,18 @@ class ExistQueryTest(unittest.TestCase):
 
     def test_getDocument(self):
         obj = self.qs.getDocument("f1.xml")
-        self.assert_(isinstance(obj, QueryTestModel),
+        self.assertTrue(isinstance(obj, QueryTestModel),
                      "object returned by getDocument is instance of QueryTestModel")
         self.assertEqual("one", obj.name)
 
     def test_distinct(self):
         qs = QuerySet(using=self.db, collection=COLLECTION, xpath='//name')
         vals = qs.distinct()
-        self.assert_('one' in vals)
-        self.assert_('two' in vals)
-        self.assert_('three' in vals)
-        self.assert_('four' in vals)
-        self.assert_('abc' not in vals)
+        self.assertTrue('one' in vals)
+        self.assertTrue('two' in vals)
+        self.assertTrue('three' in vals)
+        self.assertTrue('four' in vals)
+        self.assertTrue('abc' not in vals)
 
     def test_namespaces(self):
         # filter on a field with a namespace
@@ -591,7 +591,7 @@ class ExistQueryTest__FullText(unittest.TestCase):
         # search for terms present in fixtures - but not both present in one doc
         fqs = qs.filter(description__fulltext_terms='only third')
         # for now, just confirm that the option is passed through to query
-        self.assert_('<default-operator>and</default-operator>' in fqs.query.getQuery())
+        self.assertTrue('<default-operator>and</default-operator>' in fqs.query.getQuery())
         # TODO: test this properly!
         # query options not supported in current version of eXist
         # self.assertEqual(0, fqs.count())
@@ -602,29 +602,29 @@ class ExistQueryTest__FullText(unittest.TestCase):
 
     def test_only__fulltext_score(self):
         fqs = self.qs.filter(description__fulltext_terms='one').only('fulltext_score', 'name')
-        self.assert_(isinstance(fqs[0], QueryTestModel))  # actually a Partial type derived from this
+        self.assertTrue(isinstance(fqs[0], QueryTestModel))  # actually a Partial type derived from this
         # fulltext score attribute should be present
         self.assertNotEqual(fqs[0].fulltext_score, None)
-        self.assert_(float(fqs[0].fulltext_score) > 0.5)    # full-text score should be a float
+        self.assertTrue(float(fqs[0].fulltext_score) > 0.5)    # full-text score should be a float
 
     def test_fulltext_highlight(self):
         fqs = self.qs.filter(description__fulltext_terms='only two')
         # result from fulltext search - by default, xml should have exist:match tags
-        self.assert_('<exist:match' in fqs[0].serialize())
+        self.assertTrue('<exist:match'.encode(encoding='UTF-8') in fqs[0].serialize())
 
         fqs = self.qs.filter(description__fulltext_terms='only two', highlight=False)
         # with highlighting disabled, should not have exist:match tags
-        self.assert_('<exist:match' not in fqs[0].serialize())
+        self.assertTrue('<exist:match'.encode(encoding='UTF-8') not in fqs[0].serialize())
 
         # order of args in the same filter should not matter
         fqs = self.qs.filter(highlight=False, description__fulltext_terms='only two')
         # with highlighting disabled, should not have exist:match tags
-        self.assert_('<exist:match' not in fqs[0].serialize())
+        self.assertTrue('<exist:match'.encode(encoding='UTF-8') not in fqs[0].serialize())
 
         # separate filters should also work
         fqs = self.qs.filter(description__fulltext_terms='only two').filter(highlight=False)
         # with highlighting disabled, should not have exist:match tags
-        self.assert_('<exist:match' not in fqs[0].serialize())
+        self.assertTrue('<exist:match'.encode(encoding='UTF-8') not in fqs[0].serialize())
 
     def test_highlight(self):
         fqs = self.qs.filter(highlight='supercalifragilistic')
@@ -632,7 +632,7 @@ class ExistQueryTest__FullText(unittest.TestCase):
                          "highlight filter returns all documents even though search term is not present")
 
         fqs = self.qs.filter(highlight='one').order_by('id')
-        self.assert_('<exist:match' in fqs[0].serialize())
+        self.assertTrue('<exist:match'.encode(encoding='UTF-8') in fqs[0].serialize())
 
     def test_match_count(self):
         fqs = self.qs.filter(id='one', highlight='one').only('match_count')
@@ -648,152 +648,152 @@ class XqueryTest(unittest.TestCase):
 
     def test_defaults(self):
         xq = Xquery()
-        self.assertEquals('/node()', xq.getQuery())
+        self.assertEqual('/node()', xq.getQuery())
 
     def test_xpath(self):
         xq = Xquery(xpath='/path/to/el')
-        self.assertEquals('/path/to/el', xq.getQuery())
+        self.assertEqual('/path/to/el', xq.getQuery())
 
     def test_coll(self):
         xq = Xquery(collection='myExistColl')
-        self.assertEquals('collection("/db/myExistColl")/node()', xq.getQuery())
+        self.assertEqual('collection("/db/myExistColl")/node()', xq.getQuery())
 
         xq = Xquery(xpath='/root/el', collection='/coll/sub')
-        self.assertEquals('collection("/db/coll/sub")/root/el', xq.getQuery())
+        self.assertEqual('collection("/db/coll/sub")/root/el', xq.getQuery())
 
     def test_set_collection(self):
         # initialize with no collection
         xq = Xquery(xpath='/el')
         xq.set_collection('coll')
-        self.assertEquals('collection("/db/coll")/el', xq.getQuery())
+        self.assertEqual('collection("/db/coll")/el', xq.getQuery())
 
         # initialize with one collection, then switch
         xq = Xquery(collection='coll1')
         xq.set_collection('coll2')
-        self.assertEquals('collection("/db/coll2")/node()', xq.getQuery())
+        self.assertEqual('collection("/db/coll2")/node()', xq.getQuery())
 
         # leading slash is ok too
         xq.set_collection('/coll3')
-        self.assertEquals('collection("/db/coll3")/node()', xq.getQuery())
+        self.assertEqual('collection("/db/coll3")/node()', xq.getQuery())
 
         # set to None
         xq.set_collection(None)
-        self.assertEquals('/node()', xq.getQuery())
+        self.assertEqual('/node()', xq.getQuery())
 
     def test_document(self):
         xq = Xquery(xpath='/el', document="/db/coll/file.xml")
-        self.assertEquals('doc("/db/coll/file.xml")/el', xq.getQuery())
+        self.assertEqual('doc("/db/coll/file.xml")/el', xq.getQuery())
         # document takes precedence over collection
         xq.set_collection('coll')  # should be ignored
-        self.assertEquals('doc("/db/coll/file.xml")/el', xq.getQuery())
+        self.assertEqual('doc("/db/coll/file.xml")/el', xq.getQuery())
 
     def test_sort(self):
         xq = Xquery(collection="mycoll")
         xq.xq_var = '$n'
         xq.sort('@id')
-        self.assert_('order by $n/@id ascending' in xq.getQuery())
-        self.assert_('collection("/db/mycoll")' in xq.getQuery())
+        self.assertTrue('order by $n/@id ascending' in xq.getQuery())
+        self.assertTrue('collection("/db/mycoll")' in xq.getQuery())
 
         # prep_xpath function should clean up more complicated xpaths
         xq.sort('name|@id')
-        self.assert_('order by $n/name|$n/@id' in xq.getQuery())
+        self.assertTrue('order by $n/name|$n/@id' in xq.getQuery())
 
         # sort descending
         xq.sort('@id', ascending=False)
-        self.assert_('order by $n/@id descending' in xq.getQuery())
+        self.assertTrue('order by $n/@id descending' in xq.getQuery())
 
         # sort case-insensitive
         xq.sort('@id', case_insensitive=True)
-        self.assert_('order by fn:lower-case($n/@id) ascending' in xq.getQuery())
+        self.assertTrue('order by fn:lower-case($n/@id) ascending' in xq.getQuery())
 
         # case-insensitive and descending
         xq.sort('@id', case_insensitive=True, ascending=False)
-        self.assert_('order by fn:lower-case($n/@id) descending' in xq.getQuery())
+        self.assertTrue('order by fn:lower-case($n/@id) descending' in xq.getQuery())
 
     def test_filters(self):
         xq = Xquery(xpath='/el')
         xq.add_filter('.', 'contains', 'dog')
-        self.assertEquals('/el[contains(., "dog")]', xq.getQuery())
+        self.assertEqual('/el[contains(., "dog")]', xq.getQuery())
         # filters are additive
         xq.add_filter('.', 'startswith', 'S')
-        self.assertEquals('/el[contains(., "dog")][starts-with(., "S")]', xq.getQuery())
+        self.assertEqual('/el[contains(., "dog")][starts-with(., "S")]', xq.getQuery())
 
     def test_filters_fulltext(self):
         xq = Xquery(xpath='/el')
         xq.add_filter('.', 'fulltext_terms', 'dog')
-        self.assertEquals('/el[ft:query(., "dog")]', xq.getQuery())
+        self.assertEqual('/el[ft:query(., "dog")]', xq.getQuery())
 
     def test_fulltext_options(self):
         # pass in options for a full-text query
         xq = Xquery(xpath='/el', fulltext_options={'default-operator': 'and'})
         xq.add_filter('.', 'fulltext_terms', 'dog')
-        self.assert_('<default-operator>and</default-operator>' in xq.getQuery())
-        self.assert_('/el[ft:query(., "dog", $ft_options)]', xq.getQuery())
+        self.assertTrue('<default-operator>and</default-operator>' in xq.getQuery())
+        self.assertTrue('/el[ft:query(., "dog", $ft_options)]', xq.getQuery())
 
     def test_filters_highlight(self):
         xq = Xquery(xpath='/el')
         xq.add_filter('.', 'highlight', 'dog star')
-        self.assertEquals('util:expand((/el[ft:query(., "dog star")]|/el))',
+        self.assertEqual('util:expand((/el[ft:query(., "dog star")]|/el))',
             xq.getQuery())
 
     def test_filter_escaping(self):
         xq = Xquery(xpath='/el')
         xq.add_filter('.', 'contains', '"&')
-        self.assertEquals('/el[contains(., """&amp;")]', xq.getQuery())
+        self.assertEqual('/el[contains(., """&amp;")]', xq.getQuery())
 
     def test_filter_in(self):
         xq = Xquery(xpath='/el')
         xq.add_filter('@id', 'in', ['a', 'b', 'c'])
-        self.assertEquals('/el[@id="a" or @id="b" or @id="c"]', xq.getQuery())
+        self.assertEqual('/el[@id="a" or @id="b" or @id="c"]', xq.getQuery())
 
         # filter on a 'special' field - requires let & where statements
         xq = Xquery(xpath='/el')
         xq.add_filter('document_name', 'in', ['a.xml', 'b.xml'])
-        self.assert_('let $document_name' in xq.getQuery())
-        self.assert_('where $document_name="a.xml" or $document_name="b.xml"'
+        self.assertTrue('let $document_name' in xq.getQuery())
+        self.assertTrue('where $document_name="a.xml" or $document_name="b.xml"'
                      in xq.getQuery())
 
     def test_filter_exists(self):
         xq = Xquery(xpath='/el')
         xq.add_filter('@id', 'exists', True)
-        self.assertEquals('/el[@id]', xq.getQuery())
+        self.assertEqual('/el[@id]', xq.getQuery())
 
         xq = Xquery(xpath='/el')
         xq.add_filter('@id', 'exists', False)
-        self.assertEquals('/el[not(@id)]', xq.getQuery())
+        self.assertEqual('/el[not(@id)]', xq.getQuery())
 
     def test_filter_gtlt(self):
         xq = Xquery(xpath='/el')
         xq.add_filter('@id', 'gt', 5)
-        self.assert_('el[@id > 5]' in xq.getQuery())
+        self.assertTrue('el[@id > 5]' in xq.getQuery())
 
         xq = Xquery(xpath='/el')
         xq.add_filter('@id', 'gte', 5)
-        self.assert_('/el[@id >= 5]' in xq.getQuery())
+        self.assertTrue('/el[@id >= 5]' in xq.getQuery())
 
         xq.add_filter('@id', 'lt', '10')
-        self.assert_('el[@id >= 5]' in xq.getQuery())
-        self.assert_('[@id < "10"]' in xq.getQuery())
+        self.assertTrue('el[@id >= 5]' in xq.getQuery())
+        self.assertTrue('[@id < "10"]' in xq.getQuery())
 
         xq.add_filter('@id', 'lte', 3)
-        self.assert_('[@id <= 3]' in xq.getQuery())
+        self.assertTrue('[@id <= 3]' in xq.getQuery())
 
     def test_or_filters(self):
         xq = Xquery(xpath='/el')
         xq.add_filter('.', 'contains', 'dog', mode='OR')
         xq.add_filter('.', 'startswith', 'S', mode='OR')
-        self.assertEquals('/el[contains(., "dog") or starts-with(., "S")]',
+        self.assertEqual('/el[contains(., "dog") or starts-with(., "S")]',
                           xq.getQuery())
 
     def test_not_filters(self):
         xq = Xquery(xpath='/el')
         xq.add_filter('.', 'contains', 'dog', mode='NOT')
-        self.assertEquals('/el[not(contains(., "dog"))]', xq.getQuery())
+        self.assertEqual('/el[not(contains(., "dog"))]', xq.getQuery())
 
         xq = Xquery(xpath='/el')
         xq.add_filter('.', 'contains', 'dog', mode='NOT')
         xq.add_filter('.', 'startswith', 'S', mode='NOT')
-        self.assertEquals('/el[not(contains(., "dog")) and not(starts-with(., "S"))]',
+        self.assertEqual('/el[not(contains(., "dog")) and not(starts-with(., "S"))]',
                           xq.getQuery())
 
     def test_return_only(self):
@@ -802,67 +802,67 @@ class XqueryTest(unittest.TestCase):
         xq.return_only({'myid': '@id', 'some_name': 'name',
             'first_letter': 'substring(@n,1,1)'})
         xq_return = xq._constructReturn()
-        self.assert_('return <el>' in xq_return)
-        self.assert_('<field>{$n/@id}</field>' in xq_return)
-        self.assert_('<field>{$n/name}</field>' in xq_return)
-        self.assert_('<field>{substring($n/@n,1,1)}</field>' in xq_return)
-        self.assert_('</el>' in xq_return)
+        self.assertTrue('return <el>' in xq_return)
+        self.assertTrue('<field>{$n/@id}</field>' in xq_return)
+        self.assertTrue('<field>{$n/name}</field>' in xq_return)
+        self.assertTrue('<field>{substring($n/@n,1,1)}</field>' in xq_return)
+        self.assertTrue('</el>' in xq_return)
 
         xq = Xquery(xpath='/some/el/notroot')
         xq.return_only({'id': '@id'})
-        self.assert_('return <notroot>' in xq._constructReturn())
+        self.assertTrue('return <notroot>' in xq._constructReturn())
 
         # case where node test can't be the return element
         xq = Xquery(xpath='/foo/bar/node()')
         xq.return_only({'myid': '@id'})
         xq_return = xq._constructReturn()
-        self.assert_('return <node>' in xq_return)
+        self.assertTrue('return <node>' in xq_return)
 
         xq = Xquery(xpath='/foo/bar/*')
         xq.return_only({'myid': '@id'})
         xq_return = xq._constructReturn()
-        self.assert_('return <node>' in xq_return)
+        self.assertTrue('return <node>' in xq_return)
 
     def test_return_only__fulltext_score(self):
         xq = Xquery(xpath='/el')
         xq.xq_var = '$n'
         xq.return_only({'fulltext_score': ''})
-        self.assert_('let $fulltext_score := ft:score($n)' in xq.getQuery())
-        self.assert_('<fulltext_score>{$fulltext_score}</fulltext_score>' in xq._constructReturn())
+        self.assertTrue('let $fulltext_score := ft:score($n)' in xq.getQuery())
+        self.assertTrue('<fulltext_score>{$fulltext_score}</fulltext_score>' in xq._constructReturn())
 
     def test_return_also(self):
         xq = Xquery(xpath='/el')
         xq.xq_var = '$n'
         xq.return_also({'myid': '@id', 'some_name': 'name'})
-        self.assert_('{$n}' in xq._constructReturn())
-        self.assert_('<field>{$n/@id}</field>' in xq._constructReturn())
+        self.assertTrue('{$n}' in xq._constructReturn())
+        self.assertTrue('<field>{$n/@id}</field>' in xq._constructReturn())
 
     def test_return_also__fulltext_score(self):
         xq = Xquery(xpath='/el')
         xq.xq_var = '$n'
         xq.return_also({'fulltext_score': ''})
-        self.assert_('let $fulltext_score := ft:score($n)' in xq.getQuery())
-        self.assert_('<fulltext_score>{$fulltext_score}</fulltext_score>' in xq._constructReturn())
+        self.assertTrue('let $fulltext_score := ft:score($n)' in xq.getQuery())
+        self.assertTrue('<fulltext_score>{$fulltext_score}</fulltext_score>' in xq._constructReturn())
 
     def test_return_also__highlight(self):
         xq = Xquery(xpath='/el')
         xq.xq_var = '$n'
         xq.return_also({'fulltext_score': ''})
         xq.add_filter('.', 'highlight', 'dog star')
-        self.assert_('(/el[ft:query(., "dog star")]|/el)' in xq.getQuery())
+        self.assertTrue('(/el[ft:query(., "dog star")]|/el)' in xq.getQuery())
 
     def test_return_also_raw(self):
         xq = Xquery(xpath='/el')
         xq.xq_var = '$n'
         xq._raw_prefix = 'r_'
         xq.return_also({'myid': 'count(util:expand(%(xq_var)s/@id))'}, raw=True)
-        self.assert_('<r_myid>{count(util:expand($n/@id))}</r_myid>' in xq._constructReturn())
+        self.assertTrue('<r_myid>{count(util:expand($n/@id))}</r_myid>' in xq._constructReturn())
 
         xq = Xquery(xpath='/el')
         xq.xq_var = '$n'
         xq._raw_prefix = 'r_'
         xq.return_also({'myid': '@id'}, raw=True)
-        self.assert_('<r_myid>{@id}</r_myid>' in xq._constructReturn())
+        self.assertTrue('<r_myid>{@id}</r_myid>' in xq._constructReturn())
 
     def test_set_limits(self):
         # subsequence with xpath
@@ -872,7 +872,7 @@ class XqueryTest(unittest.TestCase):
         self.assertEqual('subsequence(/el, 1, 4)', xq.getQuery())
         # subsequence with FLWR query
         xq.return_only({'name': 'name'})
-        self.assert_('subsequence(for $n in' in xq.getQuery())
+        self.assertTrue('subsequence(for $n in' in xq.getQuery())
 
         # additive limits
         xq = Xquery(xpath='/el')
@@ -943,7 +943,7 @@ class XqueryTest(unittest.TestCase):
         xq = Xquery(xpath='/foo:el', namespaces={'foo': 'urn:foo#'})
         ns_declaration = '''declare namespace foo='urn:foo#';'''
         # xpath-only xquery should have namespace declaration
-        self.assert_(ns_declaration in xq.getQuery())
+        self.assertTrue(ns_declaration in xq.getQuery())
         # full FLOWR xquery should also have declaration
         xq.return_only({'id': '@id'})
-        self.assert_(ns_declaration in xq.getQuery())
+        self.assertTrue(ns_declaration in xq.getQuery())

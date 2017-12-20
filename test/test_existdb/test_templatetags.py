@@ -45,13 +45,13 @@ case files</title>""" % {'ex': EXISTDB_NAMESPACE}
     def test_single_match(self):
         self.content.node = etree.fromstring(self.SINGLE_MATCH)
         format = exist_matches(self.content)
-        self.assert_('Pitts v. <span class="exist-match">Freeman</span>'
+        self.assertTrue('Pitts v. <span class="exist-match">Freeman</span>'
             in format, 'exist:match tag converted to span for highlighting')
 
     def test_multiple_matches(self):
         self.content.node = etree.fromstring(self.MULTI_MATCH)
         format = exist_matches(self.content)
-        self.assert_('Pitts v. <span class="exist-match">Freeman</span>'
+        self.assertTrue('Pitts v. <span class="exist-match">Freeman</span>'
             in format, 'first exist:match tag converted')
-        self.assert_('<span class="exist-match">school</span> <span class="exist-match">desegregation</span>'
+        self.assertTrue('<span class="exist-match">school</span> <span class="exist-match">desegregation</span>'
             in format, 'second and third exist:match tags converted')

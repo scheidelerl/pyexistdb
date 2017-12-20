@@ -36,8 +36,6 @@ stand-in replacement in any context that expects one.
 from lxml import etree
 from lxml.builder import ElementMaker
 import re
-from types import BooleanType
-
 from eulxml import xmlmap
 from eulxml.xmlmap import load_xmlobject_from_string
 from eulxml.xmlmap.core import XmlObjectType
@@ -224,7 +222,7 @@ class QuerySet(object):
 
         qscopy = self._getCopy()
 
-        for arg, value in kwargs.iteritems():
+        for arg, value in list(kwargs.items()):
             fields, rest = _split_fielddef(arg, self.model)
             if rest and rest not in qscopy.query.available_filters:
                 # check if xpath portion is actually an xquery predefined field
@@ -249,13 +247,13 @@ class QuerySet(object):
 
             # highlighting is only an xquery filter when passed as a string
             elif lookuptype != 'highlight' or \
-                    lookuptype == 'highlight' and not isinstance(value, BooleanType):
+                    lookuptype == 'highlight' and not isinstance(value, bool):
                 qscopy.query.add_filter(xpath, lookuptype, value, combine)
 
             # enable highlighting when a full-text query is used
             if lookuptype == 'fulltext_terms':
                 # boolean highlight setting overrides default
-                if 'highlight' in kwargs and isinstance(kwargs['highlight'], BooleanType):
+                if 'highlight' in kwargs and isinstance(kwargs['highlight'], bool):
                     qscopy._highlight_matches = kwargs['highlight']
                     qscopy.query.highlight = kwargs['highlight']
                 else:
@@ -264,7 +262,7 @@ class QuerySet(object):
 
             if lookuptype == 'highlight':
                 qscopy.query.highlight = value
-                if isinstance(value, BooleanType):
+                if isinstance(value, bool):
                     # boolean - only triggers eXist highlighting in xml return
                     qscopy._highlight_matches = value
                 else:
@@ -441,7 +439,7 @@ class QuerySet(object):
         'Common functionality for :meth:`also_raw` and :meth:`only_raw`.'
         field_objs = {}
         field_xpath = {}
-        for field, xpath in fields.iteritems():
+        for field, xpath in list(fields.items()):
             field_xpath[field] = xpath
             fieldlist, rest = _split_fielddef(field, self.model)
             if fieldlist and not rest:
@@ -541,7 +539,7 @@ class QuerySet(object):
 
     def __getitem__(self, k):
         """Return a single result or slice of results from the query."""
-        if not isinstance(k, (slice, int, long)):
+        if not isinstance(k, (slice, int)):
             raise TypeError
 
         if isinstance(k, slice):
@@ -551,7 +549,10 @@ class QuerySet(object):
                 qs._start = int(k.start)
             # if a slice bigger than available results is requested, cap it at
             # actual max
-            qs._stop = min(k.stop, self.count())
+            if k.stop is not None:
+                qs._stop = min(k.stop, self.count())
+            else:
+                qs._stop = self.count()
 
             # because the slicing is done within the result cache,
             # share the same cache across subsets of this queryset
@@ -691,7 +692,7 @@ class QuerySet(object):
         """Get a single document from the server by filename."""
         data = self._db.getDocument('/'.join([self.query.collection, docname]))
         # getDocument returns unicode instead of string-- need to decode before handing off to parseString
-        return load_xmlobject_from_string(data.encode('utf_8'), self.model)
+        return load_xmlobject_from_string(data, self.model)
 
 
 def _create_return_class(baseclass, override_fields, xpath_prefix=None,
@@ -722,7 +723,7 @@ def _create_return_class(baseclass, override_fields, xpath_prefix=None,
     # collect names of subobjects, with information needed to create additional return classes
     subclasses = {}
     subclass_fields = {}
-    for name, fields in override_fields.iteritems():
+    for name, fields in list(override_fields.items()):
 
         # nested object fields are indicated by basename__subname
         if '__' in name:
@@ -739,7 +740,7 @@ def _create_return_class(baseclass, override_fields, xpath_prefix=None,
                 field_type = xmlmap.DateTimeField
             elif name == 'match_count':
                 field_type = xmlmap.IntegerField
-            elif fields is None or isinstance(fields, basestring):
+            elif fields is None or isinstance(fields, str):
                 field_type = xmlmap.StringField    # handle special cases like fulltext score
             else:
                 field_type = type(fields[-1])
@@ -770,7 +771,7 @@ def _create_return_class(baseclass, override_fields, xpath_prefix=None,
                 class_fields[name] = field_type(xpath)
 
     # create subclasses and add to current class fields
-    for subclass_name, nodefield in subclasses.iteritems():
+    for subclass_name, nodefield in list(subclasses.items()):
         # create a new class derived from the configured nodefield class, with subclass fields
         prefix = subclass_name
         if xpath_prefix:
@@ -794,7 +795,7 @@ def _quote_as_string_literal(s):
     # special case: do nothing to queries constructed using
     # XmlQuery class
     if (isinstance(s, XmlQuery)):
-        return s
+        return s.serialize().decode("utf-8")
     return '"' + escape_string(s) + '"'
 
 
@@ -904,7 +905,7 @@ class Xquery(object):
         declarations = None
         if self.namespaces:
             declarations = '\n'.join('''declare namespace %s='%s';''' % (prefix, urn)
-                                for prefix, urn in self.namespaces.iteritems())
+                                for prefix, urn in list(self.namespaces.items()))
 
         xpath_parts = []
         if self.document is not None:
@@ -933,7 +934,7 @@ class Xquery(object):
         # add search terms for highlighting if requested
         if self.highlight is not None:
 
-            if not isinstance(self.highlight, BooleanType):
+            if not isinstance(self.highlight, bool):
                 # Highlighting results efficiently in eXist is a bit tricky.  We need to run a full-text search so
                 # eXist will enable match highlighting in the result, but we want to return the result even if there are
                 # no matches present. What we're doing here is telling eXist to take the first available version of the
@@ -951,7 +952,7 @@ class Xquery(object):
                 # construct xml option configuration for fulltext query
                 E = ElementMaker()
                 opts = E('options')
-                for field, value in self.fulltext_options.iteritems():
+                for field, value in list(self.fulltext_options.items()):
                     opts.append(E(field, value))
                 flowr_pre = 'let %s := %s' % (self.ft_option_xqvar, etree.tostring(opts))
 
@@ -1148,7 +1149,7 @@ class Xquery(object):
             # since they will be compared differently
 
             # if already numeric, use as is without any conversion
-            if isinstance(value, (int, long, float)):
+            if isinstance(value, (int, float)):
                 val = value
             # otherwise, treat it as a string
             else:
@@ -1185,7 +1186,7 @@ class Xquery(object):
         """
         self.return_fields.update(fields)
         if raw:
-            self.raw_fields.extend(fields.keys())
+            self.raw_fields.extend(list(fields.keys()))
 
     def return_also(self, fields, raw=False):
         """Return additional specified fields.  See :meth:`return_only` for
@@ -1198,7 +1199,7 @@ class Xquery(object):
         """
         self.additional_return_fields.update(fields)
         if raw:
-            self.raw_fields.extend(fields.keys())
+            self.raw_fields.extend(list(fields.keys()))
 
     def _constructReturn(self):
         """Construct the return portion of a FLOWR xquery."""
@@ -1220,7 +1221,7 @@ class Xquery(object):
                 rblocks = ["{%s}" % self.xq_var]    # return entire node
 
             fields = dict(self.return_fields, **self.additional_return_fields)
-            for name, xpath in fields.iteritems():
+            for name, xpath in list(fields.items()):
                 # special cases
                 if name in self.special_fields:
                     # reference any special fields requested as xquery variables
@@ -1304,7 +1305,7 @@ class Xquery(object):
         # common xpath clean-up before handing off to exist
 
         # if the xpath passed in is a basestring, it has not yet been parsed
-        if isinstance(xpath, basestring):
+        if isinstance(xpath, str):
             parsed_xpath = parse(xpath)
         else:
             parsed_xpath = xpath
@@ -1412,7 +1413,7 @@ class Xquery(object):
             # when there are additional return fields, all extra fields
             # are one step up relative to main node
             prefix = '../'
-        for name in fields.keys():
+        for name in list(fields.keys()):
             if name in self.special_fields:
                 # for predefined fields, xpath is the name of the field
                 xpaths[name] = prefix + name
@@ -1439,6 +1440,7 @@ class XmlQuery(xmlmap.XmlObject):
     near = xmlmap.StringField('near')
     #: unordered near
     near_unorderted = xmlmap.StringField('near[@ordered = "no"]')
+
 
     # also available
     # <bool><term>nation</term><term>miserable</term></bool>

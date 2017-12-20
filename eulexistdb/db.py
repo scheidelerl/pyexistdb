@@ -99,10 +99,10 @@ import logging
 import requests
 import socket
 import time
-from urllib import splittype
-import urlparse
+from urllib.parse import splittype
+import urllib.parse
 import warnings
-import xmlrpclib
+import xmlrpc.client
 
 try:
     from django.dispatch import Signal
@@ -127,8 +127,8 @@ def _wrap_xmlrpc_fault(f):
             return f(*args, **kwargs)
         except (socket.timeout, requests.exceptions.ReadTimeout) as err:
             raise ExistDBTimeout(err)
-        except (socket.error, xmlrpclib.Fault,
-                xmlrpclib.ProtocolError, xmlrpclib.ResponseError,
+        except (socket.error, xmlrpc.client.Fault,
+                xmlrpc.client.ProtocolError, xmlrpc.client.ResponseError,
                 requests.exceptions.ConnectionError) as err:
             raise ExistDBException(err)
         # FIXME: could we catch IOerror (connection reset) and try again ?
@@ -253,7 +253,7 @@ class ExistDB(object):
         transport = RequestsTransport(timeout=timeout, session=self.session,
                                       url=self.exist_url, **datetime_opt)
 
-        self.server = xmlrpclib.ServerProxy(
+        self.server = xmlrpc.client.ServerProxy(
                 uri='%s/xmlrpc' % self.exist_url.rstrip('/'),
                 transport=transport,
                 encoding=encoding,
@@ -288,7 +288,7 @@ class ExistDB(object):
     def _init_from_xmlrpc_url(self, url):
         # map old-style xmlrpc url with username/password to
         # new-style initialization
-        parsed = urlparse.urlparse(url)
+        parsed = urllib.parse.urlparse(url)
         # add username/password if set
         if parsed.username:
             self.username = parsed.username
@@ -534,7 +534,7 @@ class ExistDB(object):
             result_type = self.resultType
 
         opts = ' '.join('%s=%s' % (key.lstrip('_'), val)
-                        for key, val in params.iteritems() if key != '_query')
+                        for key, val in params.items() if key != '_query')
         if xquery:
             debug_query = '\n%s' % xquery
         else:
@@ -857,7 +857,7 @@ class ExistExceptionResponse(xmlmap.XmlObject):
 
 # requests-based xmlrpc transport
 # https://gist.github.com/chrisguitarguy/2354951
-class RequestsTransport(xmlrpclib.Transport):
+class RequestsTransport(xmlrpc.client.Transport):
     """
     Transport for xmlrpclib that uses Requests instead of httplib.
 
@@ -870,7 +870,7 @@ class RequestsTransport(xmlrpclib.Transport):
         be used when making xmlrpc requests
     """
     # update user agent to reflect use of requests
-    user_agent = "xmlrpclib.py/%s via requests %s" % (xmlrpclib.__version__,
+    user_agent = "xmlrpclib.py/%s via requests %s" % (xmlrpc.client.__version__,
         requests.__version__)
 
     # boolean flag to indicate whether https should be used or not
@@ -881,7 +881,7 @@ class RequestsTransport(xmlrpclib.Transport):
         # if default timeout is requested, use the global socket default
         if timeout is ExistDB.DEFAULT_TIMEOUT:
             timeout = socket.getdefaulttimeout()
-        xmlrpclib.Transport.__init__(self, *args, **kwargs)
+        xmlrpc.client.Transport.__init__(self, *args, **kwargs)
         self.timeout = timeout
         # NOTE: assumues that if basic auth is needed, it is set
         # on the session that is passed in
@@ -912,7 +912,7 @@ class RequestsTransport(xmlrpclib.Transport):
             try:
                 resp.raise_for_status()
             except requests.RequestException as err:
-                raise xmlrpclib.ProtocolError(url, resp.status_code,
+                raise xmlrpc.client.ProtocolError(url, resp.status_code,
                                               str(err), resp.headers)
             else:
                 return self.parse_response(resp)
@@ -920,7 +920,7 @@ class RequestsTransport(xmlrpclib.Transport):
     def getparser(self):
         # Patch the parser to prevent errors on Apache's extended
         # attributes. See the code in the patch module for details.
-        parser, unmarshaller = xmlrpclib.Transport.getparser(self)
+        parser, unmarshaller = xmlrpc.client.Transport.getparser(self)
         return patch.XMLRpcLibPatch.apply(parser, unmarshaller)
 
     def parse_response(self, resp):

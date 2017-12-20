@@ -46,7 +46,7 @@ class ExistDBPanel(Panel):
             return_value = return_value.serialize()
 
         # remove empty values from kwargs, to simplify display
-        for k, val in list(kwargs.iteritems()):
+        for k, val in list(kwargs.items()):
             if val is None:
                 del kwargs[k]
 

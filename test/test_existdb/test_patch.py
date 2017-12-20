@@ -60,7 +60,7 @@ class PatchTest(unittest.TestCase):
         # We set things so that getparser will return mocks that won't
         # cause an exception when the test is run, so the test will pass
         # and the patch won't be warranted.
-        with patch("eulexistdb.patch.xmlrpclib.getparser") as getparser:
+        with patch("eulexistdb.patch.xmlrpc.client.getparser") as getparser:
             getparser.return_value = (Mock(), Mock())
             # Clear the cached value. So that it is recomputed.
             db_patch.XMLRpcLibPatch._warranted = None

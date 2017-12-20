@@ -96,7 +96,7 @@ class ModelTest(unittest.TestCase):
 
     def test_manager(self):
         partings = Parting.objects.all()
-        self.assertEquals(2, partings.count())
+        self.assertEqual(2, partings.count())
 
     def test_sibling_query(self):
         # test sibling node access via 'also'
