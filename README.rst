@@ -18,26 +18,27 @@ EULexistdb
     :target: http://pyexistdb.readthedocs.org/en/latest/?badge=stable
     :alt: Documentation Status
 
-**code**
-  .. image:: https://travis-ci.org/emory-libraries/eulexistdb.svg?branch=master
-    :target: https://travis-ci.org/emory-libraries/eulexistdb
-    :alt: travis-ci build
+..
+    **code**
+      .. image:: https://travis-ci.org/emory-libraries/eulexistdb.svg?branch=master
+        :target: https://travis-ci.org/emory-libraries/eulexistdb
+        :alt: travis-ci build
 
-  .. image:: https://coveralls.io/repos/github/emory-libraries/eulexistdb/badge.svg?branch=master
-    :target: https://coveralls.io/github/emory-libraries/eulexistdb?branch=master
-    :alt: Code Coverage
+      .. image:: https://coveralls.io/repos/github/emory-libraries/eulexistdb/badge.svg?branch=master
+        :target: https://coveralls.io/github/emory-libraries/eulexistdb?branch=master
+        :alt: Code Coverage
 
-  .. image:: https://codeclimate.com/github/emory-libraries/eulexistdb/badges/gpa.svg
-    :target: https://codeclimate.com/github/emory-libraries/eulexistdb
-    :alt: Code Climate
+      .. image:: https://codeclimate.com/github/emory-libraries/eulexistdb/badges/gpa.svg
+        :target: https://codeclimate.com/github/emory-libraries/eulexistdb
+        :alt: Code Climate
 
-  .. image:: https://landscape.io/github/emory-libraries/eulexistdb/master/landscape.svg?style=flat
-     :target: https://landscape.io/github/emory-libraries/eulexistdb/master
-     :alt: Code Health
+      .. image:: https://landscape.io/github/emory-libraries/eulexistdb/master/landscape.svg?style=flat
+         :target: https://landscape.io/github/emory-libraries/eulexistdb/master
+         :alt: Code Health
 
-  .. image:: https://requires.io/github/emory-libraries/eulexistdb/requirements.svg?branch=master
-    :target: https://requires.io/github/emory-libraries/eulexistdb/requirements/?branch=master
-    :alt: Requirements Status
+      .. image:: https://requires.io/github/emory-libraries/eulexistdb/requirements.svg?branch=master
+        :target: https://requires.io/github/emory-libraries/eulexistdb/requirements/?branch=master
+        :alt: Requirements Status
 
 
 EULexistdb is a `Python <http://www.python.org/>`_ module that
