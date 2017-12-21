@@ -9,3 +9,8 @@ nosetests.xml
 .coverage
 .tox
 .cache
+
+__pycache__/
+env/
+env27/
+.idea/
