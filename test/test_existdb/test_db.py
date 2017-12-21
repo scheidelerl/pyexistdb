@@ -52,9 +52,9 @@ except ImportError:
             setattr(settings, key, val)
 
 
-from eulexistdb import db
-from eulexistdb import patch as db_patch
-from eulexistdb.exceptions import ExistDBTimeout
+from pyexistdb import db
+from pyexistdb import patch as db_patch
+from pyexistdb.exceptions import ExistDBTimeout
 
 from localsettings import EXISTDB_SERVER_URL, EXISTDB_SERVER_USER, \
     EXISTDB_SERVER_PASSWORD, EXISTDB_TEST_COLLECTION, \
@@ -538,7 +538,7 @@ class ExistDBTest(unittest.TestCase):
         self.assertRaises(ExistDBTimeout, timeoutdb.query, 'util:wait(10000)')
 
         # use mocks to test initialization/timeout parameters
-        with patch('eulexistdb.db.socket') as mocksocket:
+        with patch('pyexistdb.db.socket') as mocksocket:
             timeout_server = 'http://nonexistent/exist:8080/timeout'
             # default timeout
             timeoutdb = db.ExistDB(server_url=timeout_server)
@@ -546,7 +546,7 @@ class ExistDBTest(unittest.TestCase):
             mocksocket.reset_mock()
 
             # timeout specified
-            with patch('eulexistdb.db.requests') as mockrequests:
+            with patch('pyexistdb.db.requests') as mockrequests:
                 timeout = 3
                 timeoutdb = db.ExistDB(server_url=timeout_server,
                                        timeout=timeout)
@@ -566,10 +566,10 @@ class ExistDBTest(unittest.TestCase):
     @skipIf(django is None, 'Requires Django')
     def test_django_timeout(self):
         # use mocks to test initialization/timeout parameters
-        with patch('eulexistdb.db.socket') as mocksocket:
+        with patch('pyexistdb.db.socket') as mocksocket:
             timeout_server = 'http://nonexistent/exist:8080/timeout'
 
-            with patch('eulexistdb.db.requests') as mockrequests:
+            with patch('pyexistdb.db.requests') as mockrequests:
 
                 # test init via django settings
                 django_timeout = 4

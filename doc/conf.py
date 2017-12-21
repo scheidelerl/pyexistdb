@@ -1,6 +1,6 @@
 # eulexistdb documentation build configuration file
 
-import eulexistdb
+import pyexistdb
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx']
 
@@ -9,21 +9,21 @@ exclude_trees = ['build']
 source_suffix = '.rst'
 master_doc = 'index'
 
-project = 'EULexistdb'
-copyright = '2011, Emory University Libraries'
-version = '%d.%d' % eulexistdb.__version_info__[:2]
-release = eulexistdb.__version__
-modindex_common_prefix = ['eulexistdb.']
+project = 'pyexistdb'
+copyright = '2017, The Research Software Company'
+version = '%d.%d' % pyexistdb.__version_info__[:2]
+release = pyexistdb.__version__
+modindex_common_prefix = ['pyexistdb.']
 
 pygments_style = 'sphinx'
 
 html_style = 'default.css'
 #html_static_path = ['static']
-htmlhelp_basename = 'eulexistdbdoc'
+htmlhelp_basename = 'pyexistdbdoc'
 
 latex_documents = [
-  ('index', 'eulexistdb.tex', 'EULexistdb Documentation',
-   'Emory University Libraries', 'manual'),
+  ('index', 'pyexistdb.tex', 'pyexistdb Documentation',
+   'The Research Software Company', 'manual'),
 ]
 
 # configuration for intersphinx: refer to the Python standard library, eulxml, django

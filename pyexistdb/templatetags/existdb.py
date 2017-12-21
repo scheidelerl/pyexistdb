@@ -37,7 +37,7 @@ from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
-from eulexistdb.db import EXISTDB_NAMESPACE
+from pyexistdb.db import EXISTDB_NAMESPACE
 
 __all__ = [ 'exist_matches' ]
 

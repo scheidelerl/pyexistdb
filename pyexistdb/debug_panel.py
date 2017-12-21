@@ -14,7 +14,7 @@ the query, arguments passed, and response returned.
 
 from debug_toolbar.panels import Panel
 
-from eulexistdb import db
+from pyexistdb import db
 
 # implementation based on django-debug-toolbar cache panel
 
@@ -24,7 +24,7 @@ class ExistDBPanel(Panel):
     name = 'ExistDB'
     has_content = True
 
-    template = 'eulexistdb/debug_panel.html'
+    template = 'pyexistdb/debug_panel.html'
 
     def __init__(self, *args, **kwargs):
         super(ExistDBPanel, self).__init__(*args, **kwargs)

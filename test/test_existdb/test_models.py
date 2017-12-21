@@ -29,12 +29,12 @@ except ImportError:
     import localsettings as settings
 
 from eulxml import xmlmap
-from eulexistdb.db import ExistDB
+from pyexistdb.db import ExistDB
 
 try:
     # manager and model currently require django
-    from eulexistdb.models import XmlModel
-    from eulexistdb.manager import Manager
+    from pyexistdb.models import XmlModel
+    from pyexistdb.manager import Manager
 except ImportError:
     # create dummy classes so code models declared below are valid
     class XmlModel:

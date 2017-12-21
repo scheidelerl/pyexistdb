@@ -21,11 +21,11 @@ try:
 except ImportError:
     from unittest2 import skipIf
 
-from eulexistdb.db import EXISTDB_NAMESPACE
+from pyexistdb.db import EXISTDB_NAMESPACE
 from eulxml.xmlmap import XmlObject
 try:
     # currently requires django
-    from eulexistdb.templatetags.existdb import exist_matches
+    from pyexistdb.templatetags.existdb import exist_matches
 except ImportError:
     exist_matches = None
 

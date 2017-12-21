@@ -40,8 +40,8 @@ from eulxml import xmlmap
 from eulxml.xmlmap import load_xmlobject_from_string
 from eulxml.xmlmap.core import XmlObjectType
 from eulxml.xpath import ast, parse, serialize
-from eulexistdb import db
-from eulexistdb.exceptions import DoesNotExist, ReturnedMultiple
+from pyexistdb import db
+from pyexistdb.exceptions import DoesNotExist, ReturnedMultiple
 import logging
 logger = logging.getLogger(__name__)
 

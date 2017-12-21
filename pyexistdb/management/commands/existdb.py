@@ -22,7 +22,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.test.utils import override_settings
 
-from eulexistdb.db import ExistDB
+from pyexistdb.db import ExistDB
 
 
 class Command(BaseCommand):

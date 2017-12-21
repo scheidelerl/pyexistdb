@@ -26,7 +26,7 @@ from test_existdb.test_models import *
 from test_existdb.test_templatetags import *
 from test_existdb.test_exceptions import *
 
-from eulexistdb import db
+from pyexistdb import db
 
 from localsettings import EXISTDB_SERVER_URL, EXISTDB_SERVER_ADMIN_USER, \
     EXISTDB_SERVER_ADMIN_PASSWORD, EXISTDB_SERVER_USER, \

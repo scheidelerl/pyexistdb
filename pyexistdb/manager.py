@@ -15,8 +15,8 @@
 #   limitations under the License.
 
 from django.conf import settings
-from eulexistdb.db import ExistDB
-from eulexistdb.query import QuerySet
+from pyexistdb.db import ExistDB
+from pyexistdb.query import QuerySet
 
 class Manager(object):
 

@@ -1,7 +1,7 @@
 import unittest
 from mock import patch, Mock
 
-from eulexistdb import patch as db_patch
+from pyexistdb import patch as db_patch
 
 class Foo(db_patch.Patch):
     pass
@@ -60,7 +60,7 @@ class PatchTest(unittest.TestCase):
         # We set things so that getparser will return mocks that won't
         # cause an exception when the test is run, so the test will pass
         # and the patch won't be warranted.
-        with patch("eulexistdb.patch.xmlrpc.client.getparser") as getparser:
+        with patch("pyexistdb.patch.xmlrpc.client.getparser") as getparser:
             getparser.return_value = (Mock(), Mock())
             # Clear the cached value. So that it is recomputed.
             db_patch.XMLRpcLibPatch._warranted = None

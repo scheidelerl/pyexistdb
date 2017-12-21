@@ -18,7 +18,7 @@ import socket
 import unittest
 import xmlrpc.client
 
-from eulexistdb.exceptions import ExistDBException
+from pyexistdb.exceptions import ExistDBException
 
 
 class ExistDbExceptionTest(unittest.TestCase):

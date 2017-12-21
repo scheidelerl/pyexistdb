@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from eulexistdb.manager import Manager
+from pyexistdb.manager import Manager
 from eulxml.xmlmap.core import XmlObject, XmlObjectType
 
 

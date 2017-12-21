@@ -18,10 +18,10 @@ from datetime import datetime
 import unittest
 
 from eulxml import xmlmap
-from eulexistdb.db import ExistDB
-from eulexistdb.exceptions import DoesNotExist
-from eulexistdb.exceptions import ReturnedMultiple
-from eulexistdb.query import QuerySet, Xquery, XmlQuery
+from pyexistdb.db import ExistDB
+from pyexistdb.exceptions import DoesNotExist
+from pyexistdb.exceptions import ReturnedMultiple
+from pyexistdb.query import QuerySet, Xquery, XmlQuery
 from test_existdb.test_db import EXISTDB_SERVER_URL
 from localsettings import EXISTDB_SERVER_URL, EXISTDB_SERVER_USER, \
     EXISTDB_SERVER_PASSWORD, EXISTDB_TEST_COLLECTION

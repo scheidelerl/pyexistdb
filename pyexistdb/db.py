@@ -77,7 +77,7 @@ of options like this::
     those, you may want to enable XML-RPC patching to handle the return
     types::
 
-        from eulexistdb import patch
+        from pyexistdb import patch
         patch.request_patching(patch.XMLRpcLibPatch)
 
 ---
@@ -111,7 +111,7 @@ except ImportError:
 
 from . import patch
 from eulxml import xmlmap
-from eulexistdb.exceptions import ExistDBException, ExistDBTimeout
+from pyexistdb.exceptions import ExistDBException, ExistDBTimeout
 
 __all__ = ['ExistDB', 'QueryResult', 'ExistDBException', 'EXISTDB_NAMESPACE']
 

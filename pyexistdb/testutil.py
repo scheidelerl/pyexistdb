@@ -58,7 +58,7 @@ import sys
 from django.test import TestCase as DjangoTestCase
 from django.conf import settings
 
-from eulexistdb.db import ExistDB, ExistDBException
+from pyexistdb.db import ExistDB, ExistDBException
 
 logger = logging.getLogger(__name__)
 

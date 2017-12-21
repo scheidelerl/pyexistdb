@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 import sys
 
-from eulexistdb import __version__
+from pyexistdb import __version__
 
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
@@ -43,16 +43,16 @@ dev_requirements = test_requirements + ['Django', 'django-debug-toolbar']
 
 
 setup(
-    name='eulexistdb',
+    name='pyexistdb',
     version=__version__,
-    author='Emory University Libraries',
-    author_email='libsysdev-l@listserv.cc.emory.edu',
-    url='https://github.com/emory-libraries/eulexistdb',
+    author='The Research Software Company',
+    author_email='contact@chelem.co.il',
+    url='https://github.com/zmbq/pyexistdb',
     license='Apache License, Version 2.0',
     packages=find_packages(),
     install_requires=[
         'requests',
-        'eulxml>=1.1.2',
+        'eulxml>=1.1.3',
     ],
     extras_require={
         'django': ['Django'],
@@ -64,5 +64,5 @@ setup(
     classifiers=CLASSIFIERS,
     keywords='eXist-db XQuery',
     include_package_data=True,
-    package_data={'eulexistdb': ['eulexistdb/templates/eulexistdb/*.html']},
+    package_data={'pyexistdb': ['pyexistdb/templates/pyexistdb/*.html']},
 )
