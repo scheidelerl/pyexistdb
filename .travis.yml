@@ -5,7 +5,7 @@ sudo: false
 
 python:
 #  - "2.6"
-  - "2.7"
+  - "3.5"
 
 addons:
   apt:
@@ -18,6 +18,9 @@ env:
   - DJANGO="Django>=1.7,<1.8"
   - DJANGO="Django>=1.8,<1.9"
   - DJANGO="Django>=1.9,<1.10"
+  - DJANGO="Django>=1.10,<1.11"
+  - DJANGO="Django>=1.11,<2.0"
+  - DJANGO="Django>=2.0,<2.1"
 
 before_install:
   - export EXIST_DB_VERSION=eXist-2.2

@@ -3,19 +3,19 @@ EULexistdb
 
 
 **package**
-  .. image:: https://img.shields.io/pypi/v/eulexistdb.svg
-    :target: https://pypi.python.org/pypi/eulexistdb
+  .. image:: https://img.shields.io/pypi/v/pyexistdb.svg
+    :target: https://pypi.python.org/pypi/pyexistdb
     :alt: PyPI
 
-  .. image:: https://img.shields.io/github/license/emory-libraries/eulexistdb.svg
+  .. image:: https://img.shields.io/github/license/zmbq/pyexistdb.svg
     :alt: License
 
-  .. image:: https://img.shields.io/pypi/dm/eulexistdb.svg
+  .. image:: https://img.shields.io/pypi/dm/pyexistdb.svg
     :alt: PyPI downloads
 
 **documentation**
-  .. image:: https://readthedocs.org/projects/eulexistdb/badge/?version=stable
-    :target: http://eulexistdb.readthedocs.org/en/latest/?badge=stable
+  .. image:: https://readthedocs.org/projects/pyexistdb/badge/?version=stable
+    :target: http://pyexistdb.readthedocs.org/en/latest/?badge=stable
     :alt: Documentation Status
 
 **code**

@@ -2,8 +2,12 @@ Change & Version Information
 ============================
 
 The following is a summary of changes and improvements to
-:mod:`eulexistdb`.  New features in each version should be listed, with
+:mod:`pyexistdb`.  New features in each version should be listed, with
 any necessary information about installation or upgrade notes.
+
+1.0.0
+-----
+Took :mod:`eulexistdb` and made it compatible with Python 3. This is the first version that's called :mod:`pyexistdb`.
 
 0.21.1
 ------
