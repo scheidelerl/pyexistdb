@@ -1,4 +1,4 @@
-# file eulexistdb/management/commands/existdb.py
+# file pyexistdb/management/commands/existdb.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #

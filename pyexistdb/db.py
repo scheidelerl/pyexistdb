@@ -1,4 +1,4 @@
-# file eulexistdb/db.py
+# file pyexistdb/db.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -22,9 +22,9 @@ an eXist-db_ database and executing XQuery_ queries against it.
 .. _XQuery: http://www.w3.org/TR/xquery/
 .. _eXist-db: http://exist.sourceforge.net/
 
-When used with Django, :class:`~eulexistdb.db.ExistDB` can pull
+When used with Django, :class:`~pyexistdb.db.ExistDB` can pull
 configuration settings directly from Django settings.  If you create
-an instance of :class:`~eulexistdb.db.ExistDB` without specifying a
+an instance of :class:`~pyexistdb.db.ExistDB` without specifying a
 server url, it will attempt to configure an eXist database based on
 Django settings, using the configuration names documented below.
 
@@ -83,10 +83,10 @@ of options like this::
 ---
 
 If you are writing unit tests against code that uses
-:mod:`eulexistdb`, you may want to take advantage of
-:class:`eulexistdb.testutil.TestCase` for loading fixture data to a
+:mod:`pyexistdb`, you may want to take advantage of
+:class:`pyexistdb.testutil.TestCase` for loading fixture data to a
 test eXist-db collection, and
-:class:`eulexistdb.testutil.ExistDBTestSuiteRunner`, which has logic
+:class:`pyexistdb.testutil.ExistDBTestSuiteRunner`, which has logic
 to set up and switch configurations between a development and test
 collections in eXist.
 

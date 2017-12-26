@@ -1,4 +1,4 @@
-# file eulexistdb/testutil.py
+# file pyexistdb/testutil.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -14,32 +14,32 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 """
-:mod:`eulexistdb.testutil` provides utilities for writing and running
-tests against code that makes use of :mod:`eulexistdb`.  This module
+:mod:`pyexistdb.testutil` provides utilities for writing and running
+tests against code that makes use of :mod:`pyexistdb`.  This module
 includes a customization of :class:`django.test.TestCase` with
 eXist-db fixture handling, and custom test suite runners with Fedora
 environment setup / teardown for all tests.
 
 To use, configure as test runner in your Django settings::
 
-   TEST_RUNNER = 'eulexistdb.testutil.ExistDBTextTestSuiteRunner'
+   TEST_RUNNER = 'pyexistdb.testutil.ExistDBTextTestSuiteRunner'
 
 When :mod:`xmlrunner` is available, xmlrunner variants are also
 available.  To use this test runner, configure your test runner as
 follows::
 
-    TEST_RUNNER = 'eulexistdb.testutil.ExistDBXmlTestSuiteRunner'
+    TEST_RUNNER = 'pyexistdb.testutil.ExistDBXmlTestSuiteRunner'
 
 The xml variant honors the same django settings that the xmlrunner
 django testrunner does (TEST_OUTPUT_DIR, TEST_OUTPUT_VERBOSE, and
 TEST_OUTPUT_DESCRIPTIONS).
 
-Any :class:`~eulexistdb.db.ExistDB` instances created after the test
+Any :class:`~pyexistdb.db.ExistDB` instances created after the test
 suite starts will automatically connect to the test collection.
 
 If you are using :mod:`nose` or :mod:`django-nose`, you should use the
 :class:`ExistDBSetUp` plugin to set up the test eXist database.  With
-:mod:`django-nose`, you should add ``eulexistdb.testutil.ExistDBSetUp``
+:mod:`django-nose`, you should add ``pyexistdb.testutil.ExistDBSetUp``
 to **NOSE_PLUGINS** and ``--with-existdbsetup`` to **NOSE_ARGS**
 to ensure the plugin is automatically enabled.
 

@@ -1,4 +1,4 @@
-# file eulexistdb/__init__.py
+# file pyexistdb/__init__.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -19,8 +19,8 @@
 This package provides classes to ease interaction with eXist XML databases.
 It contains the following modules:
 
- * :mod:`eulexistdb.db` -- Connect to the database and query
- * :mod:`eulexistdb.query` -- Query :class:`~eulxml.xmlmap.XmlObject`
+ * :mod:`pyexistdb.db` -- Connect to the database and query
+ * :mod:`pyexistdb.query` -- Query :class:`~eulxml.xmlmap.XmlObject`
    models from eXist with semantics like a Django_ QuerySet
 
 .. _eXist-db: http://exist.sourceforge.net/

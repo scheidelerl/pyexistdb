@@ -1,4 +1,4 @@
-# file eulexistdb/models.py
+# file pyexistdb/models.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -38,7 +38,7 @@ class XmlModelType(XmlObjectType):
     :class:`~eulxml.xmlmap.core.XmlObjectType` and further extends the
     additions that metaclass makes to its instance classes. In addition to
     collecting and translating fields, we:
-      1. take any :class:`~eulexistdb.manager.Manager members
+      1. take any :class:`~pyexistdb.manager.Manager members
          and convert them to descriptors, and
       2. store all of these managers in a ``_managers`` dictionary on the
          class.
@@ -82,13 +82,13 @@ class XmlModel(XmlObject,metaclass=XmlModelType):
 
     """
     An :class:`~eulxml.xmlmap.XmlObject` in an
-    :class:`eulexistdb.db.ExistDB`.
+    :class:`pyexistdb.db.ExistDB`.
 
     ``XmlModel`` is derived from :class:`~eulxml.xmlmap.XmlObject` and
     thus has access to all the :ref:`field <xmlmap-field>` logic
     provided by that class. Additionally, since ``XmlModel`` objects
-    are stored in an :class:`~eulexistdb.db.ExistDB`, they can define
-    :class:`~eulexistdb.manager.Manager` members for easy access to
+    are stored in an :class:`~pyexistdb.db.ExistDB`, they can define
+    :class:`~pyexistdb.manager.Manager` members for easy access to
     stored models.
     """
 

@@ -1,4 +1,4 @@
-# file eulexistdb/query.py
+# file pyexistdb/query.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -68,7 +68,7 @@ class QuerySet(object):
                   filtering. Typically this is left out, beginning with an
                   unfiltered collection: Filtering is then added with
                   :meth:`filter`.
-    :param using: The :class:`~eulexistdb.db.ExistDB` to query against.
+    :param using: The :class:`~pyexistdb.db.ExistDB` to query against.
     :param collection: If set, search only within a particular eXist-db
                        collection. Otherwise search all collections.
     :param xquery: Override the entire :class:`Xquery` object used for
@@ -486,7 +486,7 @@ class QuerySet(object):
     def using(self, collection):
         '''Specify the eXist collection to be queried.
 
-        If you are using an :class:`eulexistdb.models.XmlModel` to generate queries against an eXist
+        If you are using an :class:`pyexistdb.models.XmlModel` to generate queries against an eXist
         collection other than the one defined in ``settings.EXISTDB_ROOT_COLLECTION``, you should use this function.
         '''
         qscopy = self._getCopy()
@@ -513,8 +513,8 @@ class QuerySet(object):
         expressions match no items, or if they match more than one, this
         method throws an exception.
 
-        Raises a :class:`eulexistdb.exceptions.DoesNotExist` exception if
-        no matches are found; raises a :class:`eulexistdb.exceptions.ReturnedMultiple`
+        Raises a :class:`pyexistdb.exceptions.DoesNotExist` exception if
+        no matches are found; raises a :class:`pyexistdb.exceptions.ReturnedMultiple`
         exception if more than one match is found.
         """
 
@@ -612,7 +612,7 @@ class QuerySet(object):
     def query_result_type(self):
         '''Custom query result return type used to access a batch of results
         wrapped in an exist result as returned by the REST API.  Extends
-        :class:`eulexistdb.db.QueryResult` to add an item-level result mapping
+        :class:`pyexistdb.db.QueryResult` to add an item-level result mapping
         based, using :attr:`return_type` if appropriate.
         '''
         classname = "QuerySetResult"

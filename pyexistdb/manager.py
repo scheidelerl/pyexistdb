@@ -1,4 +1,4 @@
-# file eulexistdb/manager.py
+# file pyexistdb/manager.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -21,10 +21,10 @@ from pyexistdb.query import QuerySet
 class Manager(object):
 
     """
-    Connect an :class:`~eulexistdb.models.XmlModel` to an
-    :class:`~eulexistdb.db.ExistDB` for easy querying.
+    Connect an :class:`~pyexistdb.models.XmlModel` to an
+    :class:`~pyexistdb.db.ExistDB` for easy querying.
 
-    Typically each :class:`~eulexistdb.models.XmlModel` will
+    Typically each :class:`~pyexistdb.models.XmlModel` will
     have one or more ``Manager`` members. Like Django ``Manager`` objects
     these offer a convenient way to access model-based queries. Like Django
     ``Manager`` objects, developers can `derive a child class`_ and override
@@ -32,7 +32,7 @@ class Manager(object):
     this implementation does not currently provide a default ``Manager`` for
     every ``XmlModel``.
 
-    Developers should consult :class:`eulexistdb.query.QuerySet` for a
+    Developers should consult :class:`pyexistdb.query.QuerySet` for a
     complete list of its methods. ``Manager`` directly exposes these
     methods, forwarding them to the ``QuerySet`` returned by its own
     :meth:`get_query_set`.
@@ -50,11 +50,11 @@ class Manager(object):
 
     def get_query_set(self):
         """
-        Get the default :class:`eulexistdb.db.QuerySet` returned
+        Get the default :class:`pyexistdb.db.QuerySet` returned
         by this ``Manager``. Typically this returns a ``QuerySet`` based on
         the ``Manager``'s `xpath`, evaluated in the
         ``settings.EXISTDB_ROOT_COLLECTION`` on a default
-        :class:`eulexistdb.db.ExistDB`.
+        :class:`pyexistdb.db.ExistDB`.
 
         This is a convenient point for developers to customize an object's
         managers. Deriving a child class from Manager and overriding or

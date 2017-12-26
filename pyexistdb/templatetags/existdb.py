@@ -1,4 +1,4 @@
-# file eulexistdb/templatetags/existdb.py
+# file pyexistdb/templatetags/existdb.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #

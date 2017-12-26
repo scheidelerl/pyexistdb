@@ -32,15 +32,15 @@ EXISTDB_SERVER_ADMIN_PASSWORD = ""
 
 # limited-access test account; will be created by the admin user for
 # testing purposes only
-EXISTDB_SERVER_USER = "eulexistdbtester"
+EXISTDB_SERVER_USER = "pyexistdbtester"
 EXISTDB_SERVER_PASSWORD = "pass1234"
 
-EXISTDB_ROOT_COLLECTION = '/eulexistdb'
+EXISTDB_ROOT_COLLECTION = '/pyexistdb'
 # test collection will be created and destroyed under base collection
-EXISTDB_TEST_BASECOLLECTION = '/test-eulexistdb'
+EXISTDB_TEST_BASECOLLECTION = '/test-pyexistdb'
 EXISTDB_TEST_COLLECTION = EXISTDB_TEST_BASECOLLECTION + EXISTDB_ROOT_COLLECTION
 # user group will be created by admin account for permissions purposes
-EXISTDB_TEST_GROUP = 'eulexistdb-test'
+EXISTDB_TEST_GROUP = 'pyexistdb-test'
 
 # for travis-ci, disable sessions since jetty exist doesn't support them
 EXISTDB_SESSION_KEEP_ALIVE = False

@@ -4,7 +4,7 @@ Panel for use with
 
 To install, add:
 
-    'eulexistdb.debug_panel.ExistDBPanel',
+    'pyexistdb.debug_panel.ExistDBPanel',
 
 to your configured **DEBUG_TOOLBAR_PANELS**.
 

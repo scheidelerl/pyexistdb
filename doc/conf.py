@@ -1,4 +1,4 @@
-# eulexistdb documentation build configuration file
+# pyexistdb documentation build configuration file
 
 import pyexistdb
 
