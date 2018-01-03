@@ -1,4 +1,4 @@
-# Makefile for EULexistdb Sphinx-based documentation
+# Makefile for pyexistdb Sphinx-based documentation
 #
 
 export PYTHONPATH=.:..

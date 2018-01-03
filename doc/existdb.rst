@@ -1,7 +1,7 @@
-:mod:`existdb` -- Store and retrieve data in an eXist database
+:mod:`pyexistdb` -- Store and retrieve data in an eXist database
 ==============================================================
 
-.. automodule:: eulexistdb
+.. automodule:: pyexistdb
 
 .. FIXME: automodules here rely on undoc-members to include undocumented
      members in the output documentation. We should move away from this,
@@ -12,7 +12,7 @@
 Direct database access
 ----------------------
 
-.. automodule:: eulexistdb.db
+.. automodule:: pyexistdb.db
 
    .. autoclass:: ExistDB(server_url[, resultType[, encoding[, verbose]]])
       :members:
@@ -48,7 +48,7 @@ Direct database access
 Object-based searching
 ----------------------
 
-.. automodule:: eulexistdb.query
+.. automodule:: pyexistdb.query
 
    .. autoclass:: QuerySet
       :members:
@@ -58,14 +58,14 @@ Object-based searching
       :members:
 
 
-Django tie-ins for :mod:`eulexistdb`
+Django tie-ins for :mod:`pyexistdb`
 ------------------------------------
 
 
-.. automodule:: eulexistdb.manager
+.. automodule:: pyexistdb.manager
    :members:
 
-.. automodule:: eulexistdb.models
+.. automodule:: pyexistdb.models
 
    .. autoclass:: XmlModel
 
@@ -81,7 +81,7 @@ Django tie-ins for :mod:`eulexistdb`
 
       Second, if an :class:`~eulxml.xml.XmlObject` is defined elsewhere, an
       application developer might simply expose
-      :class:`~eulexistdb.db.ExistDB` backed objects::
+      :class:`~pyexistdb.db.ExistDB` backed objects::
 
         class StoredThingie(XmlModel, Thingie):
             objects = Manager("/thingie")
@@ -102,7 +102,7 @@ Django tie-ins for :mod:`eulexistdb`
       .. attribute:: _managers
 
          A dictionary mapping manager names to
-         :class:`~eulexistdb.manager.Manager` objects. This
+         :class:`~pyexistdb.manager.Manager` objects. This
          dictionary includes all of the managers defined on the model
          itself, though it does not currently include managers inherited
          from the model's parents.
@@ -110,14 +110,14 @@ Django tie-ins for :mod:`eulexistdb`
 Custom Template Tags
 ^^^^^^^^^^^^^^^^^^^^
 
-.. automodule:: eulexistdb.templatetags.existdb
+.. automodule:: pyexistdb.templatetags.existdb
     :members:
 
-:mod:`~eulexistdb` Management commands
+:mod:`~pyexistdb` Management commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following management command will be available when you include
-:mod:`eulexistdb` in your django ``INSTALLED_APPS`` and rely on the
+:mod:`pyexistdb` in your django ``INSTALLED_APPS`` and rely on the
 existdb settings described above.
 
 For more details on these commands, use ``manage.py <command> help``
@@ -126,14 +126,14 @@ For more details on these commands, use ``manage.py <command> help``
    configuration for a collection index; reindex the configured
    collection based on that index configuration
 
-:mod:`~eulexistdb.testutil` Unit Test utilities
+:mod:`~pyexistdb.testutil` Unit Test utilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. automodule:: eulexistdb.testutil
+.. automodule:: pyexistdb.testutil
     :members:
 
-:mod:`~eulexistdb.debug_panel` Debug Toolbar Panel
+:mod:`~pyexistdb.debug_panel` Debug Toolbar Panel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. automodule:: eulexistdb.debug_panel
+.. automodule:: pyexistdb.debug_panel
     :members:
