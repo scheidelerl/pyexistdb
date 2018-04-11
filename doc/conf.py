@@ -2,8 +2,12 @@
 
 import pyexistdb
 import os
+import sys
 
 os.environ['DJANGO_SETTINGS_MODULE'] = os.path.join(os.path.basename(__file__), 'doc_djangosettings.py')
+sys.path.insert(0, os.path.abspath('..'))
+from django.conf import settings
+settings.configure()
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx']
 
