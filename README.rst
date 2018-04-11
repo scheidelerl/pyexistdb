@@ -15,7 +15,7 @@ pyexistdb
     :alt: PyPI downloads
 
 **documentation**
-  .. image:: https://readthedocs.org/projects/pyexistdb/badge/?version=stable
+  .. image:: https://readthedocs.org/projects/pyexistdb/badge/?version=latest
     :target: http://pyexistdb.readthedocs.org/en/latest/?badge=latest
     :alt: Documentation Status
 
@@ -48,7 +48,7 @@ Database <http://exist.sourceforge.net/>`_  in a
 pythonic, object-oriented way, with optional `Django
 <https://www.djangoproject.com/>`_ integration.
 
-**pyexistdb** is a fork of `eulexistdb <https://eulexistdb.readthedocs.io/en/stable/>` which was originally
+**pyexistdb** is a fork of `eulexistdb <https://eulexistdb.readthedocs.io/en/stable/>`_ which was originally
 created by the Digital Programs and Systems Software Team of `Emory University Libraries
 <http://web.library.emory.edu/>`_.
 
