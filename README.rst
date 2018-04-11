@@ -51,7 +51,7 @@ pythonic, object-oriented way, with optional `Django
 eXist's `XML-RPC API
 <http://exist.sourceforge.net/devguide_xmlrpc.html>`_.
 
-**eulexistdb.query** provides a **QuerySet** class modeled after
+**pyexistdb.query** provides a **QuerySet** class modeled after
 `Django QuerySet
 <http://docs.djangoproject.com/en/1.3/ref/models/querysets/>`_ in
 functionality.  This module provides **model** and **manager** classes
@@ -84,8 +84,8 @@ functionality is available when used with Django.
 Contact Information
 -------------------
 
-**pyexistdb** is a fork of `eulexistdb <https://eulexistdb.readthedocs.io/en/stable/>`, done by
-`The Research Software Company <http://www.chelem.co.il>` .
+**pyexistdb** is a fork of `eulexistdb <https://eulexistdb.readthedocs.io/en/stable/>`_, done by
+`The Research Software Company <http://www.chelem.co.il>`_ .
 
 Please contact us at contact@chelem.co.il .
 
