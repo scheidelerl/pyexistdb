@@ -41,15 +41,15 @@ pyexistdb
         :alt: Requirements Status
 
 
-pyexistdb is a `Python <http://www.python.org/>`_ module that
+**pyexistdb** is a Python 3 module that
 provides utilities and classes for interacting with the `eXist-db XML
 Database <http://exist.sourceforge.net/>`_  in a
 pythonic, object-oriented way, with optional `Django
 <https://www.djangoproject.com/>`_ integration.
 
-**pyexistdb.db** provides access to an eXist-db instance through
-eXist's `XML-RPC API
-<http://exist.sourceforge.net/devguide_xmlrpc.html>`_.
+**pyexistdb** is a fork of `eulexistdb <https://eulexistdb.readthedocs.io/en/stable/>` which was originally
+created by the Digital Programs and Systems Software Team of `Emory University Libraries
+<http://web.library.emory.edu/>`_.
 
 **pyexistdb.query** provides a **QuerySet** class modeled after
 `Django QuerySet
@@ -69,6 +69,9 @@ the collection index configuration index in the configured eXist
 database, and also provides a custom template tag that can be used to
 highlight full-text search matches.
 
+**pyexistdb.db** provides access to an eXist-db instance through
+eXist's `XML-RPC API
+<http://exist.sourceforge.net/devguide_xmlrpc.html>`_.
 
 Dependencies
 ------------
@@ -83,9 +86,7 @@ functionality is available when used with Django.
 
 Contact Information
 -------------------
-
-**pyexistdb** is a fork of `eulexistdb <https://eulexistdb.readthedocs.io/en/stable/>`_, done by
-`The Research Software Company <http://www.chelem.co.il>`_ .
+**pyexistdb** is maintained by `The Research Software Company <http://www.chelem.co.il>`_.
 
 Please contact us at contact@chelem.co.il .
 
