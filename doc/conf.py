@@ -1,6 +1,9 @@
 # pyexistdb documentation build configuration file
 
 import pyexistdb
+import os
+
+os.environ['DJANGO_SETTINGS_MODULE'] = os.path.join(os.path.basename(__file__), 'doc_djangosettings.py')
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx']
 
