@@ -7,7 +7,9 @@ pyexistdb
     :target: https://pypi.python.org/pypi/pyexistdb
     :alt: PyPI
 
-  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+  .. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+    :target: https://opensource.org/licenses/Apache-2.0
+    :alt: Apache 2 License
 
   .. image:: https://img.shields.io/pypi/dm/pyexistdb.svg
     :alt: PyPI downloads
