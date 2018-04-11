@@ -7,15 +7,14 @@ pyexistdb
     :target: https://pypi.python.org/pypi/pyexistdb
     :alt: PyPI
 
-  .. image:: https://img.shields.io/github/license/zmbq/pyexistdb.svg
-    :alt: License
+  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
   .. image:: https://img.shields.io/pypi/dm/pyexistdb.svg
     :alt: PyPI downloads
 
 **documentation**
   .. image:: https://readthedocs.org/projects/pyexistdb/badge/?version=stable
-    :target: http://pyexistdb.readthedocs.org/en/latest/?badge=stable
+    :target: http://pyexistdb.readthedocs.org/en/latest/?badge=latest
     :alt: Documentation Status
 
 ..
