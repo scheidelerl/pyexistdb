@@ -251,7 +251,7 @@ class ExistDB(object):
             self.session_opts['timeout'] = timeout
 
         transport = RequestsTransport(timeout=timeout, session=self.session,
-                                      url=self.exist_url, **datetime_opt)
+                                      url=self.exist_url, encoding=encoding, **datetime_opt)
 
         self.server = xmlrpc.client.ServerProxy(
                 uri='%s/xmlrpc' % self.exist_url.rstrip('/'),
@@ -261,6 +261,7 @@ class ExistDB(object):
                 allow_none=True,
                 **datetime_opt
             )
+        self.encoding = encoding
 
     def _serverurl_from_djangoconf(self):
         # determine what exist url to use based on django settings, if available
@@ -653,8 +654,8 @@ class ExistDB(object):
         :param position: the result index to return
         :param highlight: enable search term highlighting in result; optional,
             defaults to False
-        :rtype: the query result item as a string
-
+        :return: the query result item as a string or XMLRPC Binary
+        :rtype: string | xmlrpc.client.Binary
         """
         if highlight:
             # eXist highlight modes: attributes, elements, or both
@@ -666,6 +667,29 @@ class ExistDB(object):
         logger.debug('retrieve result id %d position=%d options=%s',
                      result_id, position, options)
         return self.server.retrieve(result_id, position, options)
+
+    def retrieve_text(self, result_id, position, highlight=False, **options):
+        """Retrieve a single result fragment, making sure it is returned as text.
+
+        :param result_id: an integer handle returned by :meth:`executeQuery`
+        :param position: the result index to return
+        :param highlight: enable search term highlighting in result; optional,
+            defaults to False
+        :return: the query result item as a string
+        :rtype: string
+
+        This function fixes an inconvenience with the original retrieve function. In some cases eXist-db returns
+        base64 encoded strings, and xmlrpc thinks the response is binary, leaving the decoding to the caller.
+        retrieve_text always decodes binaries to strings based on the default encoding.
+
+        """
+        result = self.retrieve(result_id, position, highlight, **options)
+        if isinstance(result, str):
+            return result
+        elif isinstance(result, xmlrpc.client.Binary):
+            return result.data.decode(self.encoding)
+        else:
+            raise ValueError("Received unexpected type from XML-RPC: %s", result.__class__)
 
     @_wrap_xmlrpc_fault
     def releaseQueryResult(self, result_id):
@@ -877,7 +901,7 @@ class RequestsTransport(xmlrpc.client.Transport):
     use_https = False
 
     def __init__(self, timeout=ExistDB.DEFAULT_TIMEOUT, session=None,
-                 url=None, *args, **kwargs):
+                 url=None, encoding='UTF-8', *args, **kwargs):
         # if default timeout is requested, use the global socket default
         if timeout is ExistDB.DEFAULT_TIMEOUT:
             timeout = socket.getdefaulttimeout()
@@ -898,6 +922,9 @@ class RequestsTransport(xmlrpc.client.Transport):
         if url is not None:
             self.use_https = (splittype(url)[0] == 'https')
 
+        self.encoding = encoding
+
+
     def request(self, host, handler, request_body, verbose):
         """
         Make an xmlrpc request.
@@ -906,6 +933,7 @@ class RequestsTransport(xmlrpc.client.Transport):
         try:
             resp = self.session.post(url, data=request_body,
                 timeout=self.timeout)
+            resp.encoding = self.encoding  # eXist-db (up to 4.10) doesn't specify a charset in the HTTP header, making problems
         except Exception:
             raise  # something went wrong
         else:

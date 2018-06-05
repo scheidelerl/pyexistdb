@@ -5,6 +5,13 @@ The following is a summary of changes and improvements to
 :mod:`pyexistdb`.  New features in each version should be listed, with
 any necessary information about installation or upgrade notes.
 
+1.0.1
+-----
+* Circumvent a small bug in eXist-db, where XML-RPC requests do not specify the charset in the content-type header,
+  causing UTF-8 encoded documents to be decoded improperly.
+* Added the `db.retrieve_text` method that always returns a string. `db.retrieve` may return a Binary object if
+  eXist-db decides to use base64 for encoding some fields.
+
 1.0.0
 -----
 Took :mod:`eulexistdb` and made it compatible with Python 3. This is the first version that's called :mod:`pyexistdb`.
