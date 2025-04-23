@@ -2,9 +2,13 @@
 Manage and apply patches necessary to work around issues in
 third-party libraries.
 """
-import xmlrpc.client
-import collections
+import xmlrpc.client as xmlrpclib
 from decimal import Decimal
+try:
+    from collections.abc import Callable, Iterable  # noqa
+except ImportError:
+    from collections import Callable  # noqa
+    from collections import Iterable  # noqa
 
 requested_patches = set()
 
@@ -56,13 +60,13 @@ class XMLRpcLibPatch(Patch):
             return cls._warranted
 
         good = True
-        parser, unmarshaller = xmlrpc.client.getparser()
+        parser, unmarshaller = xmlrpclib.getparser()
         try:
             # This will fail if the unmarshaller is unable to handle ex:nil.
             # We do not test for every value that we patch for. We assume if
             # ex:nil won't work, no other extended value will.
             parser.feed("<params><param><value><ex:nil/></value></param></params>")
-        except xmlrpc.client.ResponseError:
+        except xmlrpclib.ResponseError:
             good = False
 
         # Trying to close if there was an error earlier won't work.
@@ -121,7 +125,7 @@ def request_patching(patches):
     :param patches: A single class, or a sequence of classes. All
     classes must be derived from `:class:Patch`.
     """
-    if not isinstance(patches, collections.Iterable):
+    if not isinstance(patches, Iterable):
         # A single value was passed, make it iterable.
         patches = [patches]
 
